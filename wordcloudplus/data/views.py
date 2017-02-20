@@ -6,7 +6,7 @@ import mining
 def index(request):
 	if request.method == 'POST':
 		#print request.POST		#for testing / error handling
-		site_content = mining.get_data(request.POST['address'])
+		site_content = mining.get_data_set(request.POST['address'])
 	
 	else:
 		site_content = ''

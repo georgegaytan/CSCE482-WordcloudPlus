@@ -11,9 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-from dj_static import Cling						#added for heroku
+#from dj_static import Cling						#added for heroku
 
-application = Cling(get_wsgi_application())		#added for heroku
+#application = Cling(get_wsgi_application())		#added for heroku
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "wordcloudplus.settings")
 
