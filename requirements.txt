@@ -1,6 +1,5 @@
 Cheetah==2.4.4
 Django==1.9.6
-Landscape-Client==14.12
 PAM==0.4.2
 PyYAML==3.10
 Twisted-Core==13.2.0
