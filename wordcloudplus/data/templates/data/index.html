@@ -16,11 +16,10 @@
 				Website URL: <input type="text" name="address" id="address"><br>
 			<input type="submit" value="Submit">
 			</form> 
-		<p>
-			{% for m in mined_data %}
-				{{m}} 
-			{% endfor %}
-		</p>
+		
+		{% for x, y in zipped_counter %}
+		<p>' {{x}} ' = {{y}}</p>
+		{% endfor %}
 	</div>
 </body>
 
