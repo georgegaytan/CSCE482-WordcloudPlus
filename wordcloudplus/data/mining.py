@@ -3,6 +3,7 @@ import requests
 from lxml.html.clean import clean_html
 from ast import literal_eval
 import collections
+import string
 
 def get_all_texts(el, class_name):
 	return [e.text_content() for e in els.find_class(class_name)]
@@ -31,11 +32,13 @@ def get_data_set(site_address):
 	data_list_cleaned = []
 	temp = ""
 	for i in data_list:
-		temp = i.strip('\n')
-		temp = temp.strip(',')
-		temp = temp.strip('.')
+		temp = ''.join(i.split())	#remove all whitespace
+		temp = temp.encode('utf-8')	#enforces utf-8
+		temp = temp.translate(None, string.punctuation)	#remove punct
 		temp = temp.lower()			#converts to lowercase
-		data_list_cleaned.append(temp)
+		temp = temp.strip()
+		if temp:
+			data_list_cleaned.append(temp)
 
 	#data_set_cleaned = set(data_list_cleaned)	#converts list into set which
 												#removes duplicates
