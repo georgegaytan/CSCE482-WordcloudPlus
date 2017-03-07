@@ -1,9 +1,13 @@
+from stop_words import get_stop_words
 from lxml import html, etree
 import requests
 from lxml.html.clean import clean_html
 from ast import literal_eval
 import collections
 import string
+
+#init stopwords list
+stopwords = get_stop_words('english')
 
 def get_all_texts(el, class_name):
 	return [e.text_content() for e in els.find_class(class_name)]
@@ -37,7 +41,9 @@ def get_data_set(site_address):
 		temp = temp.translate(None, string.punctuation)	#remove punct
 		temp = temp.lower()			#converts to lowercase
 		temp = temp.strip()
-		if temp:
+		#lastly, remove stop words
+		temp = ''.join([word for word in temp.split() if word not in stopwords])
+		if temp:#if nonempty str
 			data_list_cleaned.append(temp)
 
 	#data_set_cleaned = set(data_list_cleaned)	#converts list into set which
