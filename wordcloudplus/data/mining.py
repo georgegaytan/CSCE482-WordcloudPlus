@@ -36,13 +36,17 @@ def get_data_set(site_address):
 	data_list_cleaned = []
 	temp = ""
 	for i in data_list:
+		#remove all whitespace
 		temp = ''.join(i.split())	#remove all whitespace
-		temp = temp.encode('utf-8')	#enforces utf-8
-		temp = temp.translate(None, string.punctuation)	#remove punct
-		temp = temp.lower()			#converts to lowercase
-		temp = temp.strip()
-		#lastly, remove stop words
+		#remove stop words
 		temp = ''.join([word for word in temp.split() if word not in stopwords])
+		#enforces utf-8
+		temp = temp.encode('utf-8')
+		#removes punctuation
+		temp = temp.translate(None, string.punctuation)
+		temp = temp.lower()	#lowercase
+
+		#if nonempty str
 		if temp:#if nonempty str
 			data_list_cleaned.append(temp)
 
