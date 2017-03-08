@@ -13,17 +13,16 @@
 	<div>
 		<h1>WordCloud+</h1>
 		<img src="{% static "images/wordcloudpluslogo.png" %}" alt="The Real Deal" style="width:480px;height:360px;" />
-		<br><br>
-			<form action="/" method="POST">
-				Website URL: <input type="text" name="address" id="address"><br>
-			<input type="submit" value="Submit">
-			</form> 
+		<br/><br/>
+		<form action="/" method="POST">
+			Website URL: <input type="text" name="address" id="address"><br>
+		<input type="submit" value="Submit">
+		</form> 
 		
 		{% for x, y in zipped_counter %}
-		<p>' {{x}} ' = {{y}}</p>
+		<p title="Data scraped from the URL given.">'{{x}}' = {{y}} </p>
 		{% endfor %}
 	</div>
 </body>
-
 
 </html>
