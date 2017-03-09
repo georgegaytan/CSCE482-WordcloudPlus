@@ -5,9 +5,14 @@ from lxml.html.clean import clean_html
 from ast import literal_eval
 import collections
 import string
+#from nltk.stem import WordNetLemmatizer
+#import nltk (for after CDR is complete to not mess with workflow)
 
 #init stopwords list
 stopwords = get_stop_words('english')
+
+#init lemmatizer
+#lemmatizer = WordNetLemmatizer()
 
 def get_all_texts(el, class_name):
 	return [e.text_content() for e in els.find_class(class_name)]
@@ -45,6 +50,9 @@ def get_data_set(site_address):
 		#removes punctuation
 		temp = temp.translate(None, string.punctuation)
 		temp = temp.lower()	#lowercase
+
+		#enforces lemmatization
+		#temp = lemmatizer.lemmatize(word)
 
 		#if nonempty str
 		if temp:#if nonempty str
