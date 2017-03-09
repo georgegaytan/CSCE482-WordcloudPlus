@@ -16,6 +16,11 @@
 				Website URL: <input type="text" name="address" id="address"><br>
 			<input type="submit" value="Submit">
 			</form> 
+			<br><br>
+			<form action="/" method="POST" enctype='multipart/form-data'>
+				Document Upload: <input type="file" name="doc" id="doc"><br>
+				<input type="submit" value="Submit">
+			</form>
 		
 		{% for x, y in zipped_counter %}
 		<p>' {{x}} ' = {{y}}</p>
