@@ -8,18 +8,14 @@ from lxml.html.clean import clean_html
 def index(request):
 	site_content_keys = []
 	site_content_values = []
-	
-	
+	wordcloud_object_dict = {}
 	
 	if request.method == 'POST':
 		print request.POST		#for testing / error handling
 		
 		try:
-			site_content = mining.get_data_set(request.POST.getlist('addresses'))
-			
-			for i in site_content:
-				site_content_keys.append(i[0])
-				site_content_values.append(i[1])
+			#site_content, site1_percentage, site2_percentage
+			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
 		except:
 			try:
 				print "reading file...:"
@@ -33,12 +29,10 @@ def index(request):
 				site_content = ''
 	else:
 		site_content = ''
-		
-	zipped_counter = zip(site_content_keys, site_content_values)
-	
-	c = {
-			'mined_data': site_content,
-			'zipped_counter': zipped_counter
-		}
-	
-	return render(request, 'data/index.html', c)
+
+	#output testing
+	# print 'site_content' + str(wordcloud_object_dict['site_content'])
+	# print 'site1_percentage' + str(wordcloud_object_dict['site1_percentage'])
+	# print 'site2_percentage' + str(wordcloud_object_dict['site2_percentage'])
+
+	return render(request, 'data/index.html', wordcloud_object_dict)

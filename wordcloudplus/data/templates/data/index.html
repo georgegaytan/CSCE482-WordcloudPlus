@@ -23,9 +23,16 @@
 				<input type="submit" value="Submit">
 			</form>
 		
-		{% for x, y in zipped_counter %}
-		<p>' {{x}} ' = {{y}}</p>
-		{% endfor %}
+		<table>
+			{% for x, y in site_content %}
+			<tr>'{{x}}' = {{y}} </tr>
+			{% endfor %}
+			{% for x, y in site1_percentage %}
+			<tr>In {{x}} we have %{{y}} </tr>
+			{% endfor %}
+			{% for x, y in site2_percentage %}
+			<tr>In {{x}} we have %{{y}} </tr>
+			{% endfor %}
 	</div>
 </body>
 
