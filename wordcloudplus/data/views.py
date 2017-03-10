@@ -15,7 +15,7 @@ def index(request):
 		print request.POST		#for testing / error handling
 		
 		try:
-			site_content = mining.get_data_set(request.POST['address'])
+			site_content = mining.get_data_set(request.POST.getlist('addresses'))
 			
 			for i in site_content:
 				site_content_keys.append(i[0])
