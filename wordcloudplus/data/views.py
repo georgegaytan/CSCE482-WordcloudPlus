@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import mining
 from lxml import html, etree
 from lxml.html.clean import clean_html
+from data.models import Docs
 
 @csrf_exempt
 def index(request):
@@ -13,10 +14,21 @@ def index(request):
 	if request.method == 'POST':
 		print request.POST		#for testing / error handling
 		
-		try:
+		if request.POST['file_upload']:
+			file=request.FILES['doc']
+			print file
+			
+			instance = Docs(	file=request.FILES['doc'],
+								title = 'temp',
+							)
+			instance.save()
+		
+		else:
 			#site_content, site1_percentage, site2_percentage
 			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
-		except:
+			
+		
+		'''
 			try:
 				print "reading file...:"
 				m = request.FILES['doc']
@@ -29,6 +41,7 @@ def index(request):
 				site_content = ''
 	else:
 		site_content = ''
+		'''
 
 	#output testing
 	# print 'site_content' + str(wordcloud_object_dict['site_content'])

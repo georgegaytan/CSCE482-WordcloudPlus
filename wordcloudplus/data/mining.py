@@ -44,7 +44,7 @@ def get_data_set(addresses = [], *args):
 		current_site_list = []
 		#if nonempty entry
 		if site:
-			print 'site addresses[] = ' + site
+		#	print 'site addresses[] = ' + site
 			data_string = scrape(site)
 			data_list = data_string.split(' ')
 			
@@ -107,7 +107,7 @@ def get_data_set(addresses = [], *args):
 		if not both_contain_word:
 			site2_percentage[j] = 100.00
 
-	print 'counter' + str(counter)
+	#print 'counter' + str(counter)
 
 
 	#wordcloud dictionary of objects
