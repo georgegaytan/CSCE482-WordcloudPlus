@@ -14,18 +14,18 @@ def index(request):
 	if request.method == 'POST':
 		print request.POST		#for testing / error handling
 		
-		if request.POST['file_upload']:
-			file=request.FILES['doc']
-			print file
+		# if request.POST['file_upload']:
+		# 	file=request.FILES['doc']
+		# 	print file
 			
-			instance = Docs(	file=request.FILES['doc'],
-								title = 'temp',
-							)
-			instance.save()
+		# 	instance = Docs(	file=request.FILES['doc'],
+		# 						title = 'temp',
+		# 					)
+		# 	instance.save()
 		
-		else:
+		# else:
 			#site_content, site1_percentage, site2_percentage
-			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
+		wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
 			
 		
 		'''

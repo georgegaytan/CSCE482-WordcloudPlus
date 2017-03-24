@@ -10,6 +10,7 @@ import string
 
 #init stopwords list
 stopwords = get_stop_words('english')
+#print stopwords
 
 #init lemmatizer
 #lemmatizer = WordNetLemmatizer()
@@ -53,13 +54,13 @@ def get_data_set(addresses = [], *args):
 			for i in data_list:
 				#remove all whitespace
 				temp = ''.join(i.split())	#remove all whitespace
-				#remove stop words
-				temp = ''.join([word for word in temp.split() if word not in stopwords])
 				#enforces utf-8
 				temp = temp.encode('utf-8')
 				#removes punctuation
 				temp = temp.translate(None, string.punctuation)
 				temp = temp.lower()	#lowercase
+				#remove stop words
+				temp = ''.join([word for word in temp.split() if word not in stopwords])
 		
 				#enforces lemmatization
 				#temp = lemmatizer.lemmatize(word)
