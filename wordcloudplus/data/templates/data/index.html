@@ -12,14 +12,15 @@
 	{% load static %}
 	<div>
 		<h1>WordCloud+</h1>
-		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="The Real Deal" style="width:480px;height:360px;" />
+		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="By George, Sam, Matt, and Dan" style="width:480px;height:360px;" />
 		<br/><br/>
 		<form action="/" method="POST">
-			Website URL: <input type="text" name="address" id="address"><br>
-		<input type="submit" value="Submit">
+			Website URL: <input type="text" name="address" id="address"/>
+			<br>
+			<input type="submit" value="Submit"/>
+			<p id="feedback1"/>
 		</form> 
-		<input type="submit" value="Create Wordcloud" onclick="create()"> 
-		<p id="feedback1"/>
+		<input type="submit" id="create" value="Create Wordcloud" onclick="create()" style="visibility:hidden"/>
 		<p id="feedback2"/>
 		
 	</div>
@@ -29,6 +30,7 @@
 	<script type="text/javascript">
 		function feedback1(){
 			document.getElementById("feedback1").innerHTML = "Got it! Please click on 'Create Wordcloud' and wait a few moments.";
+			document.getElementById("create").style.visibility = "visible";
 		}
 	</script>
 	<script type="text/javascript">
@@ -52,8 +54,9 @@
 	</script>
 	<script type="text/javascript">
 		function create(){
-			//document.getElementById("feedback2").innerHTML = "Working...";
+			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(myWordCloud, words);
+			document.getElementById("feedback2").innerHTML = "";
 		}
 	</script>
 </body>
