@@ -13,13 +13,17 @@
 	<div>
 		<h1>WordCloud+</h1>
 		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="By George, Sam, Matt, and Dan" style="width:480px;height:360px;" />
-		<br/><br/>
 		<form action="/" method="POST">
-			Website URL: <input type="text" name="address" id="address"/>
-			<br>
-			<input type="submit" value="Submit"/>
-			<p id="feedback1"/>
+			Website URL: <input type="text" name="addresses" id="address1"><br>
+			Website URL: <input type="text" name="addresses" id="address2"><br>
+			<input type="submit" value="Submit">
 		</form> 
+		<form action="/" method="POST" enctype='multipart/form-data'>
+			Document Upload: <input type="file" name="doc" id="doc"><br>
+			<input type="hidden" value="file_upload" name="file_upload">
+			<input type="submit" value="Submit">
+			<p id="feedback1"/>
+		</form>
 		<input type="submit" id="create" value="Create Wordcloud" onclick="create()" style="visibility:hidden"/>
 		<p id="feedback2"/>
 		
@@ -56,9 +60,9 @@
 		function create(){
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(myWordCloud, words);
-			document.getElementById("feedback2").innerHTML = "";
 		}
 	</script>
 </body>
 
 </html>
+
