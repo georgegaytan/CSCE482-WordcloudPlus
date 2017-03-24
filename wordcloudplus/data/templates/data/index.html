@@ -12,17 +12,50 @@
 	{% load static %}
 	<div>
 		<h1>WordCloud+</h1>
-		<img src="{% static "images/wordcloudpluslogo.png" %}" alt="The Real Deal" style="width:480px;height:360px;" />
+		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="The Real Deal" style="width:480px;height:360px;" />
 		<br/><br/>
 		<form action="/" method="POST">
 			Website URL: <input type="text" name="address" id="address"><br>
 		<input type="submit" value="Submit">
 		</form> 
+		<input type="submit" value="Create Wordcloud" onclick="create()"> 
+		<p id="feedback1"/>
+		<p id="feedback2"/>
 		
-		{% for x, y in zipped_counter %}
-		<p title="Data scraped from the URL given.">'{{x}}' = {{y}} </p>
-		{% endfor %}
 	</div>
+	<script src="{% static 'js/d3.v3.min.js' %}"></script>
+	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
+	<script src="{% static 'js/d3.sample.js' %}"></script>
+	<script type="text/javascript">
+		function feedback1(){
+			document.getElementById("feedback1").innerHTML = "Got it! Please click on 'Create Wordcloud' and wait a few moments.";
+		}
+	</script>
+	<script type="text/javascript">
+	//Create a new instance of the word cloud visualisation.
+		var myWordCloud = wordCloud('body');
+		var words_string = "{{json_string}}".replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		if (words_string != ""){ feedback1(); }
+		var words_array = words_string.split(", ");
+		var obj = { };
+		for (var i = 0, j = words_array.length; i < j; i++) {
+			obj[words_array[i]] = (obj[words_array[i]] || 0) + 1;
+		}
+		var unique_words_array = Array.from(new Set(words_array));
+		for (var i in unique_words_array) {
+			if (obj[unique_words_array[i]] < 10) { 
+				obj[unique_words_array[i]] = 0; 
+			}
+		}
+		
+		var words = unique_words_array.map(function (d) { return {text: d, size: obj[d]}; });
+	</script>
+	<script type="text/javascript">
+		function create(){
+			//document.getElementById("feedback2").innerHTML = "Working...";
+			showNewWords(myWordCloud, words);
+		}
+	</script>
 </body>
 
 </html>
