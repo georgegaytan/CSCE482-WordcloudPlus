@@ -5,7 +5,7 @@ from lxml.html.clean import clean_html
 from ast import literal_eval
 import collections
 import string
-#from nltk.stem import WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
 #import nltk (for after CDR is complete to not mess with workflow)
 
 #init stopwords list
@@ -13,7 +13,7 @@ stopwords = get_stop_words('english')
 #print stopwords
 
 #init lemmatizer
-#lemmatizer = WordNetLemmatizer()
+lemmatizer = WordNetLemmatizer()
 
 def get_all_texts(el, class_name):
 	return [e.text_content() for e in els.find_class(class_name)]
@@ -62,13 +62,10 @@ def get_data_set(addresses = [], *args):
 				#remove stop words
 				temp = ''.join([word for word in temp.split() if word not in stopwords])
 		
-				#enforces lemmatization
-				#temp = lemmatizer.lemmatize(word)
-		
 				#if nonempty str
 				if temp and (len(temp) > 2) and (not temp.isdigit()):#if nonempty str
-					current_site_list.append(temp)
-					data_list_postprocessing.append(temp)
+					current_site_list.append((lemmatizer.lemmatize(temp.decode('utf-8'))))
+					data_list_postprocessing.append((lemmatizer.lemmatize(temp.decode('utf-8'))))
 
 		#track word freq from first site
 		#TODO: automate for n>2 sources
