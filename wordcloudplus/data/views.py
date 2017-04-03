@@ -4,6 +4,7 @@ import mining
 from lxml import html, etree
 from lxml.html.clean import clean_html
 from data.models import Docs
+import textract
 
 @csrf_exempt
 def index(request):
@@ -14,15 +15,26 @@ def index(request):
 	if request.method == 'POST':
 		print request.POST		#for testing / error handling
 		
+		#Stores file in database
+		#then reads file
+		#then deletes file
 		if request.POST['file_upload']:
 			file=request.FILES['doc']
-			print file
+		# 	print file.name
 			
 			instance = Docs(	file=request.FILES['doc'],
 								title = 'temp',
 							)
 			instance.save()
-		
+
+			file_name = file.name
+			file_name = file_name.replace(" ", "_")
+			path = 'uploads/' + file_name
+			
+			text = textract.process(path)
+			print text
+			instance.delete()
+			
 		else:
 			#site_content, site1_percentage, site2_percentage
 			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
