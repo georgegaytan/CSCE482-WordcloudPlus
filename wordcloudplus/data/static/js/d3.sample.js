@@ -96,10 +96,11 @@ function getWords(words) {
 //This method tells the word cloud to redraw with a new set of words.
 //In reality the new words would probably come from a server request,
 // user input or some other source.
-function showNewWords(vis, words) {
+function showNewWords(vis, words, site1_percentage, site2_percentage) {
     //i = i || 0;
     //vis.update(getWords(i ++ % words.length));
 	//vis.update(getWords(words));
+    //alert(site1_percentage);
     vis.update(words);
 	//setTimeout(function() { showNewWords(vis, words)}, 5000)
 }

@@ -5,14 +5,17 @@ from lxml.html.clean import clean_html
 from ast import literal_eval
 import collections
 import string
-#from nltk.stem import WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 #import nltk (for after CDR is complete to not mess with workflow)
 
 #init stopwords list
 stopwords = get_stop_words('english')
+#print stopwords
 
 #init lemmatizer
-#lemmatizer = WordNetLemmatizer()
+lemmatizer = WordNetLemmatizer()
 
 def get_all_texts(el, class_name):
 	return [e.text_content() for e in els.find_class(class_name)]
@@ -53,21 +56,18 @@ def get_data_set(addresses = [], *args):
 			for i in data_list:
 				#remove all whitespace
 				temp = ''.join(i.split())	#remove all whitespace
-				#remove stop words
-				temp = ''.join([word for word in temp.split() if word not in stopwords])
 				#enforces utf-8
 				temp = temp.encode('utf-8')
 				#removes punctuation
 				temp = temp.translate(None, string.punctuation)
 				temp = temp.lower()	#lowercase
-		
-				#enforces lemmatization
-				#temp = lemmatizer.lemmatize(word)
+				#remove stop words
+				temp = ''.join([word for word in temp.split() if word not in stopwords])
 		
 				#if nonempty str
 				if temp and (len(temp) > 2) and (not temp.isdigit()):#if nonempty str
-					current_site_list.append(temp)
-					data_list_postprocessing.append(temp)
+					current_site_list.append((lemmatizer.lemmatize(temp.decode('utf-8'))))
+					data_list_postprocessing.append((lemmatizer.lemmatize(temp.decode('utf-8'))))
 
 		#track word freq from first site
 		#TODO: automate for n>2 sources
@@ -107,14 +107,15 @@ def get_data_set(addresses = [], *args):
 		if not both_contain_word:
 			site2_percentage[j] = 100.00
 
-	#print 'counter' + str(counter)
-
+	#convert site percents to django friendly JSON
+	site1_percentage_json = json.dumps(dict(site1_percentage), cls=DjangoJSONEncoder)
+	site2_percentage_json = json.dumps(dict(site2_percentage), cls=DjangoJSONEncoder)
 
 	#wordcloud dictionary of objects
 	w = {
 			'site_content' : counter.most_common(),
-			'site1_percentage' : site1_percentage.items(),
-			'site2_percentage' : site2_percentage.items()
+			'site1_percentage_json' : site1_percentage_json,
+			'site2_percentage_json' : site2_percentage_json
 		}
 
 	return w

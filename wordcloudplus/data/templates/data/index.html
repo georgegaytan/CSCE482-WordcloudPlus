@@ -39,14 +39,22 @@
 	</script>
 	<script type="text/javascript">
 	//Create a new instance of the word cloud visualisation.
+		var site_content = "{{site_content_json}}";
+		var site1_percentage = "{{site1_percentage_json}}";
+		site1_percentage = site1_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		var site2_percentage = "{{site2_percentage_json|safe}}";
 		var myWordCloud = wordCloud('body');
-		var words_string = "{{site_content_json}}".replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		var words_string = site_content.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+
 		if (words_string != ""){ feedback1(); }
+
 		var words_array = words_string.split(", ");
 		var obj = { };
+
 		for (var i = 0, j = words_array.length; i < j; i++) {
 			obj[words_array[i]] = (obj[words_array[i]] || 0) + 1;
 		}
+
 		var unique_words_array = Array.from(new Set(words_array));
 		for (var i in unique_words_array) {
 			if (obj[unique_words_array[i]] < 5) { 
@@ -59,7 +67,7 @@
 	<script type="text/javascript">
 		function create(){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(myWordCloud, words);
+			showNewWords(myWordCloud, words, site1_percentage);
 		}
 	</script>
 </body>
