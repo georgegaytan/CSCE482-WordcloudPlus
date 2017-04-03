@@ -17,7 +17,7 @@ def index(request):
 		
 		#Stores file in database
 		#then reads file
-		#then deletes file
+		#then deletes files
 		if request.POST['file_upload']:
 			file=request.FILES['doc']
 		# 	print file.name
@@ -36,24 +36,7 @@ def index(request):
 			instance.delete()
 			
 		else:
-			#site_content, site1_percentage, site2_percentage
 			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
-			
-		
-		'''
-			try:
-				print "reading file...:"
-				m = request.FILES['doc']
-				print m
-				f = open(m, 'r')
-				print f.readline()
-				
-				site_content = ''
-			except:
-				site_content = ''
-	else:
-		site_content = ''
-		'''
 
 	#output testing
 	# print 'site_content' + str(wordcloud_object_dict['site_content'])
