@@ -1,16 +1,17 @@
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
-var global_site1_per = {}
-var global_site2_per = {}
+
+//Global dictionary, follows {"word" : "color"} format
+//i.e. {"cuba" : "rgb(78.55%, 0%, 21.45%)"}
 var word_color = {}
 
-//means by which color is appropriately set
+//Appropriately sets color based on source%
 function color_filler(site1_percentage, site2_percentage){
     var color = "";
 
+    //iterates through all words, distributes % of red/blue
     for (i in site1_percentage){
-        global_site1_per[i] = site1_percentage[i].toString();
-        global_site2_per[i] = site2_percentage[i].toString();
+        //this format is used to 'fill' svg objects
         color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
         word_color[i] = color;
     }
@@ -39,7 +40,7 @@ function wordCloud(selector) {
         cloud.enter()
             .append("text")
             .style("font-family", "Impact")
-//            .style("fill", function(d, i) { return fill(i); })
+            //fills svg with color based on param tied to word 'd.text'
 			.style("fill", function(d, i){return word_color[d.text];})
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
@@ -118,8 +119,10 @@ function showNewWords(vis, words, site1_percentage, site2_percentage) {
 	//vis.update(getWords(words));
     //alert(site1_percentage);
 
-    //applies percentages
+    //applies percentages to word_color dict
     color_filler(site1_percentage, site2_percentage);
+
+    //runs update with given 'words' set on vis aka myWordCloud
     vis.update(words);
 
 	//setTimeout(function() { showNewWords(vis, words)}, 5000)

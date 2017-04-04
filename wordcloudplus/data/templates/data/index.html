@@ -39,18 +39,22 @@
 	</script>
 	<script type="text/javascript">
 	//Create a new instance of the word cloud visualisation.
+	//Each derived from {{}}, filtered, and parsed to JSON
 		var site_content = "{{site_content_json}}";
 		var words_string = site_content.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+
 		var site1_percentage = "{{site1_percentage_json}}";
 		site1_percentage = site1_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 		site1_percentage = JSON.parse(site1_percentage);
+
 		var site2_percentage = "{{site2_percentage_json}}";
 		site2_percentage = site2_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 		site2_percentage = JSON.parse(site2_percentage);
+
 		var myWordCloud = wordCloud('body');
 
-		console.log(site1_percentage);
-		console.log(site2_percentage);
+		// console.log(site1_percentage);
+		// console.log(site2_percentage);
 
 		if (words_string != ""){ feedback1(); }
 
