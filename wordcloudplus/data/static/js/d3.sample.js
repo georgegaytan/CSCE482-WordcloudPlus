@@ -8,18 +8,10 @@ var word_color = {}
 function color_filler(site1_percentage, site2_percentage){
     var color = "";
 
-    // var value;
-    // Object.keys(site1_percentage).forEach(function(key) {
-    //     console.log(key);
-    // });
-
-    //console.log(site1_percentage);
     for (i in site1_percentage){
         global_site1_per[i] = site1_percentage[i].toString();
         global_site2_per[i] = site2_percentage[i].toString();
         color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
-        //console.log(i);
-        // console.log(color);
         word_color[i] = color;
     }
     console.log(word_color);
@@ -43,12 +35,13 @@ function wordCloud(selector) {
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
 
+        console.log(word_color['cuba']);
         //Entering words
         cloud.enter()
             .append("text")
             .style("font-family", "Impact")
 //            .style("fill", function(d, i) { return fill(i); })
-			.style("fill", function(d, i){return word_color[i];})
+			.style("fill", function(d, i){return word_color[d.text];})
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
             .text(function(d) { return d.text; });
