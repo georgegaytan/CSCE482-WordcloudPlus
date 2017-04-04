@@ -14,7 +14,7 @@ function color_filler(site1_percentage, site2_percentage){
         color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
         word_color[i] = color;
     }
-    console.log(word_color);
+    //console.log(word_color);
 }
 
 // Encapsulate the word cloud functionality
@@ -35,7 +35,6 @@ function wordCloud(selector) {
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
 
-        console.log(word_color['cuba']);
         //Entering words
         cloud.enter()
             .append("text")
