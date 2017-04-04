@@ -95,6 +95,7 @@ def get_data_set(addresses = [], *args):
 		#in absence of same word, denote 100%
 		if not both_contain_word:
 			site1_percentage[i] = 100.00
+			site2_percentage[i] = 0
 
 	#horrible innefficient check for site2 words not in site1
 	#guys it's 5am and i have 2 exams today i havent studied for lol
@@ -106,6 +107,7 @@ def get_data_set(addresses = [], *args):
 		#in absence of same word, denote 100%
 		if not both_contain_word:
 			site2_percentage[j] = 100.00
+			site1_percentage[j] = 0
 
 	#convert site percents to django friendly JSON
 	site1_percentage_json = json.dumps(dict(site1_percentage), cls=DjangoJSONEncoder)

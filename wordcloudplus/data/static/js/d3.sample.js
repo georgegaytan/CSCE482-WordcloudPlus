@@ -1,10 +1,34 @@
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
+var global_site1_per = {}
+var global_site2_per = {}
+var word_color = {}
+
+//means by which color is appropriately set
+function color_filler(site1_percentage, site2_percentage){
+    var color = "";
+
+    // var value;
+    // Object.keys(site1_percentage).forEach(function(key) {
+    //     console.log(key);
+    // });
+
+    //console.log(site1_percentage);
+    for (i in site1_percentage){
+        global_site1_per[i] = site1_percentage[i].toString();
+        global_site2_per[i] = site2_percentage[i].toString();
+        color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
+        console.log(i);
+        // console.log(color);
+        word_color[i] = color;
+    }
+    //console.log(word_color);
+}
 
 // Encapsulate the word cloud functionality
 function wordCloud(selector) {
 
-    var fill = d3.scale.category20();
+    //var fill = d3.scale.category20();
 
     //Construct the word cloud's SVG element
     var svg = d3.select(selector).append("svg")
@@ -24,7 +48,7 @@ function wordCloud(selector) {
             .append("text")
             .style("font-family", "Impact")
 //            .style("fill", function(d, i) { return fill(i); })
-			.style("fill", "blue")
+			.style("fill", function(d, i){return word_color[i];})
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
             .text(function(d) { return d.text; });
@@ -101,6 +125,10 @@ function showNewWords(vis, words, site1_percentage, site2_percentage) {
     //vis.update(getWords(i ++ % words.length));
 	//vis.update(getWords(words));
     //alert(site1_percentage);
+
+    //applies percentages
+    color_filler(site1_percentage, site2_percentage);
     vis.update(words);
+
 	//setTimeout(function() { showNewWords(vis, words)}, 5000)
 }

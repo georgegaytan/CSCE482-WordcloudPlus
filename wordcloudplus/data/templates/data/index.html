@@ -40,11 +40,17 @@
 	<script type="text/javascript">
 	//Create a new instance of the word cloud visualisation.
 		var site_content = "{{site_content_json}}";
+		var words_string = site_content.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 		var site1_percentage = "{{site1_percentage_json}}";
 		site1_percentage = site1_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
-		var site2_percentage = "{{site2_percentage_json|safe}}";
+		site1_percentage = JSON.parse(site1_percentage);
+		var site2_percentage = "{{site2_percentage_json}}";
+		site2_percentage = site2_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site2_percentage = JSON.parse(site2_percentage);
 		var myWordCloud = wordCloud('body');
-		var words_string = site_content.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+
+		console.log(site1_percentage);
+		console.log(site2_percentage);
 
 		if (words_string != ""){ feedback1(); }
 
@@ -67,7 +73,7 @@
 	<script type="text/javascript">
 		function create(){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(myWordCloud, words, site1_percentage);
+			showNewWords(myWordCloud, words, site1_percentage, site2_percentage);
 		}
 	</script>
 </body>
