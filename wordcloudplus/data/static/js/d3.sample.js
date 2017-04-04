@@ -18,11 +18,11 @@ function color_filler(site1_percentage, site2_percentage){
         global_site1_per[i] = site1_percentage[i].toString();
         global_site2_per[i] = site2_percentage[i].toString();
         color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
-        console.log(i);
+        //console.log(i);
         // console.log(color);
         word_color[i] = color;
     }
-    //console.log(word_color);
+    console.log(word_color);
 }
 
 // Encapsulate the word cloud functionality
