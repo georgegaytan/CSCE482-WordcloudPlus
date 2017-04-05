@@ -3,66 +3,76 @@
 
 <head>
 	<title>WordCloud+</title>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" ></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0"></meta>
 </head>
 
 <body>
 	{% load static %}
 	<div>
 		<h1>WordCloud+</h1>
-		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="By George, Sam, Matt, and Dan" style="width:480px;height:360px;" />
+		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="Lovingly crafted by George, Sam, Matt, and Dan" style="width:480px;height:360px;"></img>
+		
 		<form action="/" method="POST">
-			Website URL: <input type="text" name="addresses" id="address1"><br>
-			Website URL: <input type="text" name="addresses" id="address2"><br>
-			<input type="submit" value="Submit">
+			Website URL: <input type="text" name="addresses" id="address1"></input>
+			<br/>
+			Website URL: <input type="text" name="addresses" id="address2"></input>
+			<br/>
+			<input type="submit" value="Submit"></input>
 		</form> 
+		
 		<form action="/" method="POST" enctype='multipart/form-data'>
-			Document Upload: <input type="file" name="doc" id="doc"><br>
-			<input type="hidden" value="file_upload" name="file_upload">
-			<input type="submit" value="Submit">
-			<p id="feedback1"/>
+			Document Upload: <input type="file" name="doc" id="doc"></input>
+			<br/>
+			<input type="hidden" value="file_upload" name="file_upload"></input>
+			<input type="submit" value="Submit"></input>
 		</form>
-		<input type="submit" id="create" value="Create Wordcloud" onclick="create()" style="visibility:hidden"/>
-		<p id="feedback2"/>
+		
+		<p id="feedback1"></p>
+		<input type="button" id="create" value="Create Wordcloud" onclick="create();" style="visibility:hidden"></input>
+		<p id="feedback2"></p>
 		
 	</div>
+	
 	<script src="{% static 'js/d3.v3.min.js' %}"></script>
 	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
 	<script src="{% static 'js/d3.sample.js' %}"></script>
-	<script type="text/javascript">
+	
+	<script>
 		function feedback1(){
 			document.getElementById("feedback1").innerHTML = "Got it! Please click on 'Create Wordcloud' and wait a few moments.";
 			document.getElementById("create").style.visibility = "visible";
 		}
-	</script>
-	<script type="text/javascript">
+	
 	//Create a new instance of the word cloud visualisation.
 		var myWordCloud = wordCloud('body');
 		var words_string = "{{json_string}}".replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
-		if (words_string != ""){ feedback1(); }
 		var words_array = words_string.split(", ");
 		var obj = { };
 		for (var i = 0, j = words_array.length; i < j; i++) {
 			obj[words_array[i]] = (obj[words_array[i]] || 0) + 1;
 		}
 		var unique_words_array = Array.from(new Set(words_array));
+		
+		var see = unique_words_array.join();
+		
 		for (var i in unique_words_array) {
-			if (obj[unique_words_array[i]] < 10) { 
+			if (obj[unique_words_array[i]] < 3) { 
 				obj[unique_words_array[i]] = 0; 
 			}
 		}
 		
-		var words = unique_words_array.map(function (d) { return {text: d, size: obj[d]}; });
-	</script>
-	<script type="text/javascript">
+		var words = unique_words_array.map(function (d) { return { text: d, size: obj[d] }; });
+		if (words_string != ""){ feedback1(); }
+	
 		function create(){
 			document.getElementById("feedback2").innerHTML = "Working...";
+			
+			//document.getElementById("feedback1").innerHTML = see;
 			showNewWords(myWordCloud, words);
 		}
 	</script>
-</body>
 
 </html>
 

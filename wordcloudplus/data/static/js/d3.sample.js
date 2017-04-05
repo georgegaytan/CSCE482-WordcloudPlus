@@ -57,9 +57,10 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            d3.layout.cloud().size([1000, 1000])
+            //d3.layout.cloud()
+			this.size([1000, 1000])
                 .words(words)
-                .padding(5)
+                .padding()
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
                 .font("Impact")
                 .fontSize(function(d) { return d.size; })
