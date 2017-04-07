@@ -4,6 +4,8 @@
 //Global dictionary, follows {"word" : "color"} format
 //i.e. {"cuba" : "rgb(78.55%, 0%, 21.45%)"}
 var word_color = {}
+var source1_percentage = {}
+var source2_percentage = {}
 
 //Appropriately sets color based on source%
 function color_filler(site1_percentage, site2_percentage){
@@ -15,7 +17,18 @@ function color_filler(site1_percentage, site2_percentage){
         color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
         word_color[i] = color;
     }
-    //console.log(word_color);
+    // console.log(word_color);
+}
+
+function word_source_position(site1_percentage, site2_percentage) {
+    for (i in site1_percentage) {
+        source1_percentage[i] = site1_percentage[i];
+    }
+
+    for (i in site2_percentage) {
+        source2_percentage[i] = site2_percentage[i]
+    }
+    // console.log(location_percentage);
 }
 
 // Encapsulate the word cloud functionality
@@ -33,6 +46,7 @@ function wordCloud(selector) {
 
     //Draw the word cloud
     function draw(words) {
+
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
 
@@ -52,7 +66,12 @@ function wordCloud(selector) {
                 .duration(600)
                 .style("font-size", function(d) { return d.size + "px"; })
                 .attr("transform", function(d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    if (source1_percentage[d.text] > source2_percentage[d.text]) {
+                        return "translate(" + [source1_percentage[d.text] * 3, d.y] + ")rotate(" + d.rotate + ")";
+                    }
+                    else {
+                        return "translate(" + [-source2_percentage[d.text] * 3, d.y] + ")rotate(" + d.rotate + ")";
+                    }
                 })
                 .style("fill-opacity", 1);
 
@@ -121,6 +140,8 @@ function showNewWords(vis, words, site1_percentage, site2_percentage) {
 
     //applies percentages to word_color dict
     color_filler(site1_percentage, site2_percentage);
+
+    word_source_position(site1_percentage, site2_percentage);
 
     //runs update with given 'words' set on vis aka myWordCloud
     vis.update(words);
