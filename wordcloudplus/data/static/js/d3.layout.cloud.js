@@ -30,7 +30,7 @@ module.exports = function() {
     return arguments.length ? (canvas = functor(_), cloud) : canvas;
   };
 
-  cloud.start = function() {
+  cloud.start = function(source1_percent, source2_percent) {
     var contextAndRatio = getContext(canvas()),
         board = zeroArray((size[0] >> 5) * size[1]),
         bounds = null,
@@ -50,15 +50,24 @@ module.exports = function() {
 
     if (timer) clearInterval(timer);
     timer = setInterval(step, 0);
-    step();
+    step(source1_percent, source2_percent);
 
     return cloud;
 
-    function step() {
+    function step(source1_percent, source2_percent) {
       var start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
         var d = data[i];
-        d.x = (size[0] * (random() + .5)) >> 1;
+
+        if (source1_percent[d.text] > source2_percent[d.text]) {
+          d.x = ((size[0] * (random() + .5)) >> 1) + (source1_percent[d.text] * 3);
+        }
+        else {
+          d.x = ((size[0] * (random() + .5)) >> 1) - (source2_percent[d.text] * 3);
+          // d.x = ((size[0] * (random() + .5)) >> 1);
+        }
+
+        // d.x = ((size[0] * (random() + .5)) >> 1);
         d.y = (size[1] * (random() + .5)) >> 1;
         cloudSprite(contextAndRatio, d, data, i);
         if (d.hasText && place(board, d, bounds)) {
