@@ -66,12 +66,7 @@ function wordCloud(selector) {
                 .duration(600)
                 .style("font-size", function(d) { return d.size + "px"; })
                 .attr("transform", function(d) {
-                    if (source1_percentage[d.text] > source2_percentage[d.text]) {
-                        return "translate(" + [source1_percentage[d.text] * 3, d.y] + ")rotate(" + d.rotate + ")";
-                    }
-                    else {
-                        return "translate(" + [-source2_percentage[d.text] * 3, d.y] + ")rotate(" + d.rotate + ")";
-                    }
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                 })
                 .style("fill-opacity", 1);
 
@@ -101,7 +96,7 @@ function wordCloud(selector) {
                 .font("Impact")
                 .fontSize(function(d) { return d.size; })
                 .on("end", draw)
-                .start();
+                .start(source1_percentage, source2_percentage);
         }
     }
 
