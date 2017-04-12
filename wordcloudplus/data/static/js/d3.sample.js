@@ -3,21 +3,30 @@
 
 //Global dictionary, follows {"word" : "color"} format
 //i.e. {"cuba" : "rgb(78.55%, 0%, 21.45%)"}
-var word_color = {}
-var source1_percentage = {}
-var source2_percentage = {}
+var word_color1 = {}
+var word_color2 = {}
 
 //Appropriately sets color based on source%
-function color_filler(site1_percentage, site2_percentage){
+function color_filler(instance, site1_percentage, site2_percentage){
     var color = "";
 
-    //iterates through all words, distributes % of red/blue
-    for (i in site1_percentage){
-        //this format is used to 'fill' svg objects
-        color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
-        word_color[i] = color;
+    if (instance == 1){
+        //iterates through all words, distributes % of red/blue
+        for (i in site1_percentage){
+            //this format is used to 'fill' svg objects
+            color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
+            word_color1[i] = color;
+        }
+        //console.log(word_color);
+    } else {
+        //iterates through all words, distributes % of red/blue
+        for (i in site1_percentage){
+            //this format is used to 'fill' svg objects
+            color = "rgb(" + site1_percentage[i] + "%,0%," + site2_percentage[i] + "%)";
+            word_color2[i] = color;
+        }
+        //console.log(word_color);
     }
-    // console.log(word_color);
 }
 
 function word_source_position(site1_percentage, site2_percentage) {
@@ -31,6 +40,7 @@ function word_source_position(site1_percentage, site2_percentage) {
     // console.log(location_percentage);
 }
 
+//TODO: MAKE MULTIPLE OF THESE
 // Encapsulate the word cloud functionality
 function wordCloud(selector) {
 
@@ -46,7 +56,6 @@ function wordCloud(selector) {
 
     //Draw the word cloud
     function draw(words) {
-
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
 
@@ -55,7 +64,7 @@ function wordCloud(selector) {
             .append("text")
             .style("font-family", "Impact")
             //fills svg with color based on param tied to word 'd.text'
-			.style("fill", function(d, i){return word_color[d.text];})
+            .style("fill", function(d, i){return word_color1[d.text];})
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
             .text(function(d) { return d.text; });
@@ -117,7 +126,7 @@ var words = [
 function getWords(words) {
     //return words[i]
     return words
-			.replace(/[!\.,:;\?]/g, '')
+            .replace(/[!\.,:;\?]/g, '')
             .split(' ')
             .map(function(d) {
                 return {text: d, size: 10 + Math.random() * 60};
@@ -127,19 +136,19 @@ function getWords(words) {
 //This method tells the word cloud to redraw with a new set of words.
 //In reality the new words would probably come from a server request,
 // user input or some other source.
-function showNewWords(vis, words, site1_percentage, site2_percentage) {
+function showNewWords(instance, vis, words, site1_percentage, site2_percentage) {
     //i = i || 0;
     //vis.update(getWords(i ++ % words.length));
-	//vis.update(getWords(words));
+    //vis.update(getWords(words));
     //alert(site1_percentage);
 
-    //applies percentages to word_color dict
-    color_filler(site1_percentage, site2_percentage);
-
+    //applies percentages to word_color dict, instance = year
+    color_filler(instance, site1_percentage, site2_percentage);
+    //Applies percentage to source_percentage dict
     word_source_position(site1_percentage, site2_percentage);
 
     //runs update with given 'words' set on vis aka myWordCloud
     vis.update(words);
 
-	//setTimeout(function() { showNewWords(vis, words)}, 5000)
+    //setTimeout(function() { showNewWords(vis, words)}, 5000)
 }

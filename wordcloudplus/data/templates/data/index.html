@@ -6,6 +6,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
@@ -14,17 +15,29 @@
 		<h1>WordCloud+</h1>
 		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="By George, Sam, Matt, and Dan" style="width:480px;height:360px;" />
 		<form action="/" method="POST">
-			Website URL: <input type="text" name="addresses" id="address1"><br>
-			Website URL: <input type="text" name="addresses" id="address2"><br>
+			TO TEST NORMALLY JUST ENTER URL IN FIRST 2 BOXES, years do not separate them into groups for the wordcloud just yet btw <br>
+			Website URL: <input type="text" name="firstAddresses" id="firstAddr1">
+			Year: <input type="text" name="years" id="year1">
+			<br>
+			Website URL: <input type="text" name="firstAddresses" id="firstAddr2">
+			Year: <input type="text" name="years" id="year2">
+			<br>
+			Website URL: <input type="text" name="secondAddresses" id="secondAddr1">
+			Year: <input type="text" name="years" id="year3">
+			<br>
+			Website URL: <input type="text" name="secondAddresses" id="secondAddr2">
+			Year: <input type="text" name="years" id="year4">
+			<br>
 			<input type="submit" value="Submit">
 		</form> 
 		<form action="/" method="POST" enctype='multipart/form-data'>
 			Document Upload: <input type="file" name="doc" id="doc"><br>
 			<input type="hidden" value="file_upload" name="file_upload">
 			<input type="submit" value="Submit">
-			<p id="feedback1"/>
+			<p id="feedback1" style="visibility:hidden"/>Got it! Please click on 'Create Wordcloud' and wait a few moments. </p>
 		</form>
-		<input type="submit" id="create" value="Create Wordcloud" onclick="create()" style="visibility:hidden"/>
+		<input type="submit" id="create1" value="Create Wordcloud" onclick="create1()" style="visibility:hidden"/>
+		<input type="submit" id="create2" value="Create Wordcloud" onclick="create2()" style="visibility:hidden"/>
 		<p id="feedback2"/>
 		
 	</div>
@@ -32,52 +45,87 @@
 	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
 	<script src="{% static 'js/d3.sample.js' %}"></script>
 	<script type="text/javascript">
-		function feedback1(){
-			document.getElementById("feedback1").innerHTML = "Got it! Please click on 'Create Wordcloud' and wait a few moments.";
-			document.getElementById("create").style.visibility = "visible";
+		function creating1(){
+			document.getElementById("feedback1").style.visibility = "visible";
+			document.getElementById("create1").style.visibility = "visible";
+		}
+		function creating2(){
+			document.getElementById("feedback1").style.visibility = "visible";
+			document.getElementById("create2").style.visibility = "visible";
 		}
 	</script>
 	<script type="text/javascript">
 	//Create a new instance of the word cloud visualisation.
 	//Each derived from json, filtered, and parsed to JSON
-		var site_content = "{{site_content_json}}";
-		var words_string = site_content.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 
-		var site1_percentage = "{{site1_percentage_json}}";
-		site1_percentage = site1_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
-		site1_percentage = JSON.parse(site1_percentage);
+	//First half of years
+		var site_content1 = "{{site_content_json1}}";
+		var words_string1 = site_content1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 
-		var site2_percentage = "{{site2_percentage_json}}";
-		site2_percentage = site2_percentage.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
-		site2_percentage = JSON.parse(site2_percentage);
+		var site1_percentage1 = "{{site1_percentage_json1}}";
+		site1_percentage1 = site1_percentage1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site1_percentage1 = JSON.parse(site1_percentage1);
+
+		var site2_percentage1 = "{{site2_percentage_json1}}";
+		site2_percentage1 = site2_percentage1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site2_percentage1 = JSON.parse(site2_percentage1);
+
+	//Second half of years
+		var site_content2 = "{{site_content_json2}}";
+		var words_string2 = site_content2.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+
+		var site1_percentage2 = "{{site1_percentage_json2}}";
+		site1_percentage2 = site1_percentage2.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site1_percentage2 = JSON.parse(site1_percentage2);
+
+		var site2_percentage2 = "{{site2_percentage_json2}}";
+		site2_percentage2 = site2_percentage2.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site2_percentage2 = JSON.parse(site2_percentage2);
 
 		var myWordCloud = wordCloud('body');
 
 		// console.log(site1_percentage);
 		// console.log(site2_percentage);
 
-		if (words_string != ""){ feedback1(); }
+		if (words_string1 != ""){ creating1(); }
+		if (words_string2 != ""){ creating2(); }
 
-		var words_array = words_string.split(", ");
-		var obj = { };
+		var words_array1 = words_string1.split(", ");
+		var obj1 = { };
+		var words_array2 = words_string2.split(", ");
+		var obj2 = { };
 
-		for (var i = 0, j = words_array.length; i < j; i++) {
-			obj[words_array[i]] = (obj[words_array[i]] || 0) + 1;
+		for (var i = 0, j = words_array1.length; i < j; i++) {
+			obj1[words_array1[i]] = (obj1[words_array1[i]] || 0) + 1;
+		}
+		for (var i = 0, j = words_array2.length; i < j; i++) {
+			obj2[words_array2[i]] = (obj2[words_array2[i]] || 0) + 1;
 		}
 
-		var unique_words_array = Array.from(new Set(words_array));
-		for (var i in unique_words_array) {
-			if (obj[unique_words_array[i]] < 5) { 
-				obj[unique_words_array[i]] = 0; 
+		var unique_words_array1 = Array.from(new Set(words_array1));
+		for (var i in unique_words_array1) {
+			if (obj1[unique_words_array1[i]] < 5) { 
+				obj1[unique_words_array1[i]] = 0; 
+			}
+		}
+		var unique_words_array2 = Array.from(new Set(words_array2));
+		for (var i in unique_words_array2) {
+			if (obj2[unique_words_array2[i]] < 5) { 
+				obj2[unique_words_array2[i]] = 0; 
 			}
 		}
 		
-		var words = unique_words_array.map(function (d) { return {text: d, size: obj[d]}; });
+		var words1 = unique_words_array1.map(function (d) { return {text: d, size: obj1[d]}; });
+		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
 	</script>
 	<script type="text/javascript">
-		function create(){
+		function create1(){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(myWordCloud, words, site1_percentage, site2_percentage);
+			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
+		}
+		function create2(){
+			document.getElementById("feedback2").innerHTML = "Working...";
+			showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2);
 		}
 	</script>
 </body>
