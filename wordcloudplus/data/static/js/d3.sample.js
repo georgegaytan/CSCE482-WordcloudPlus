@@ -29,17 +29,6 @@ function color_filler(instance, site1_percentage, site2_percentage){
     }
 }
 
-function word_source_position(site1_percentage, site2_percentage) {
-    for (i in site1_percentage) {
-        source1_percentage[i] = site1_percentage[i];
-    }
-
-    for (i in site2_percentage) {
-        source2_percentage[i] = site2_percentage[i]
-    }
-    // console.log(location_percentage);
-}
-
 //TODO: MAKE MULTIPLE OF THESE
 // Encapsulate the word cloud functionality
 function wordCloud(selector) {
@@ -97,7 +86,7 @@ function wordCloud(selector) {
         // asycnhronously call draw when the layout has been computed.
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
-        update: function(words) {
+        update: function(words, source1_percentage, source2_percentage) {
             d3.layout.cloud().size([1000, 1000])
                 .words(words)
                 .padding(5)
@@ -144,11 +133,9 @@ function showNewWords(instance, vis, words, site1_percentage, site2_percentage) 
 
     //applies percentages to word_color dict, instance = year
     color_filler(instance, site1_percentage, site2_percentage);
-    //Applies percentage to source_percentage dict
-    word_source_position(site1_percentage, site2_percentage);
 
     //runs update with given 'words' set on vis aka myWordCloud
-    vis.update(words);
+    vis.update(words, site1_percentage, site2_percentage);
 
     //setTimeout(function() { showNewWords(vis, words)}, 5000)
 }
