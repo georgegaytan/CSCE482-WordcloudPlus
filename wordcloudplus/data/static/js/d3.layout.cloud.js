@@ -32,7 +32,7 @@ module.exports = function() {
     return arguments.length ? (canvas = functor(_), cloud) : canvas;
   };
 
-  cloud.start = function() {
+  cloud.start = function(source1_percent, source2_percent) {
     var contextAndRatio = getContext(canvas()),
         board = zeroArray((size[0] >> 5) * size[1]),
         bounds = null,
@@ -54,26 +54,34 @@ module.exports = function() {
 
     if (timer) clearInterval(timer);
     timer = setInterval(step, 0);
-    step();
+	//var debug_word = 'computer' //DELETE ALONG WITH console.log()'S IN step() FUNCTION
+    step(source1_percent, source2_percent);
 
     return cloud;
 
-    function step() {
+    function step(source1_percent, source2_percent) {
       var start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
         var d = data[i];
 		if (d.x != null){ 
-			//if (d.text == 'computer'){ console.log("Found a previous d.x: " + d.x); }
+			//if (d.text == debug_word){ console.log("Found a previous d.x: " + d.x); }
 			d.x = (d.x + 500); 
 		}else{ 
-			d.x = (size[0] * (random() + .5)) >> 1;
-			//if (d.text == 'computer'){ console.log("Initializing d.x: " + d.x); }
+			//d.x = (size[0] * (random() + .5)) >> 1;
+			
+			if (source1_percent[d.text] > source2_percent[d.text]) {
+				d.x = (source1_percent[d.text] * 3) + 500;
+			}else {
+				d.x = - (source2_percent[d.text] * 3) + 500;
+			}
+			
+			//if (d.text == debug_word){ console.log("Initializing d.x: " + d.x); }
 		}if (d.y != null){
-			//if (d.text == 'computer'){ console.log("Found a previous d.y: " + d.y); }
+			//if (d.text == debug_word){ console.log("Found a previous d.y: " + d.y); }
 			d.y = (d.y + 500);
-		}else{ 
+		}else{
 			d.y = (size[1] * (random() + .5)) >> 1;
-			//if (d.text == 'computer'){ console.log("Initializing d.y: " + d.y); }
+			//if (d.text == debug_word){ console.log("Initializing d.y: " + d.y); }
 		}
         cloudSprite(contextAndRatio, d, data, i);
         if (d.hasText && place(board, d, bounds)) {
