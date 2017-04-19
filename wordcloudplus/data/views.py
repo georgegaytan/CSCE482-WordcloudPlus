@@ -16,6 +16,10 @@ def index(request):
 	site_content_values2 = []
 	site_content_json2 = '['
 	wordcloud_object_dict2 = {}
+	site_content_keys3 = []
+	site_content_values3 = []
+	site_content_json3 = '['
+	wordcloud_object_dict3 = {}
 	"""
 	if request.method == 'POST':
 		#print request.POST		#for testing / error handling
@@ -57,6 +61,7 @@ def index(request):
 		years = request.POST.getlist('years')
 		wordcloud_object_dict1 = mining.get_data_set(request.POST.getlist('firstAddresses'))
 		wordcloud_object_dict2 = mining.get_data_set(request.POST.getlist('secondAddresses'))
+		wordcloud_object_dict3 = mining.get_data_set(request.POST.getlist('thirdAddresses'))
 
 		site_content1 = wordcloud_object_dict1['site_content']
 		site1_percentage_json1 = wordcloud_object_dict1['site1_percentage_json']
@@ -65,6 +70,10 @@ def index(request):
 		site_content2 = wordcloud_object_dict2['site_content']
 		site1_percentage_json2 = wordcloud_object_dict2['site1_percentage_json']
 		site2_percentage_json2 = wordcloud_object_dict2['site2_percentage_json']
+
+		site_content3 = wordcloud_object_dict3['site_content']
+		site1_percentage_json3 = wordcloud_object_dict3['site1_percentage_json']
+		site2_percentage_json3 = wordcloud_object_dict3['site2_percentage_json']
 
 		for i in site_content1:
 			site_content_keys1.append(i[0])
@@ -78,6 +87,12 @@ def index(request):
 			site_content_json2 += (('' + i[0] + ', ') * i[1])
 		site_content_json2 = site_content_json2[:-2] + ']'
 
+		for i in site_content3:
+			site_content_keys3.append(i[0])
+			site_content_values3.append(i[1])
+			site_content_json3 += (('' + i[0] + ', ') * i[1])
+		site_content_json3 = site_content_json3[:-2] + ']'
+
 	else:
 		years = ''
 		site_content1 = ''
@@ -88,6 +103,10 @@ def index(request):
 		site1_percentage_json2 = ''
 		site2_percentage_json2 = ''
 
+		site_content3 = ''
+		site1_percentage_json3 = ''
+		site2_percentage_json3 = ''
+
 	c = {
 			'site_content_json1':site_content_json1,
 			'site1_percentage_json1':site1_percentage_json1,
@@ -95,6 +114,9 @@ def index(request):
 			'site_content_json2':site_content_json2,
 			'site1_percentage_json2':site1_percentage_json2,
 			'site2_percentage_json2':site2_percentage_json2,
+			'site_content_json3':site_content_json3,
+			'site1_percentage_json3':site1_percentage_json3,
+			'site2_percentage_json3':site2_percentage_json3,			
 			'years':years
 		}
 

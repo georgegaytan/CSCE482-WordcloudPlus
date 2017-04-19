@@ -14,19 +14,85 @@
 	<div>
 		<h1>WordCloud+</h1>
 		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="By George, Sam, Matt, and Dan" style="width:480px;height:360px;" />
+	    <script type="text/javascript">
+	    	var set1Counter = 2;
+	    	var set2Counter = 2;
+	    	var set3Counter = 2;
+			var limit = 5;
+
+		    function addInput(divName, set){
+		    	if(set == 1){
+		    		if (set1Counter == limit)  {
+		            	alert("You have reached the limit of adding " + limit + " inputs");
+			        }
+			        else {
+			            var newdiv = document.createElement('div');
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set1Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set1Counter + 1) + "'><br>";
+			            document.getElementById(divName).appendChild(newdiv);
+		    	        set1Counter++;
+			        }
+		    	}
+
+		    	if(set == 2){
+		    		if (set2Counter == limit)  {
+		            	alert("You have reached the limit of adding " + limit + " inputs");
+			        }
+			        else {
+			            var newdiv = document.createElement('div');
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set2Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set2Counter + 1) + "'><br>";
+			            document.getElementById(divName).appendChild(newdiv);
+		    	        set2Counter++;
+			        }
+		    	}
+
+		    	if(set == 3){
+					if (set3Counter == limit)  {
+	            		alert("You have reached the limit of adding " + limit + " inputs");
+			        }
+			        else {
+			            var newdiv = document.createElement('div');
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set3Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set3Counter + 1) + "'><br>";
+			            document.getElementById(divName).appendChild(newdiv);
+		    	        set3Counter++;
+			        }
+		    	}
+		    }
+	    </script>
 		<form action="/" method="POST">
-			TO TEST NORMALLY JUST ENTER URL IN FIRST 2 BOXES, years do not separate them into groups for the wordcloud just yet btw <br>
-			Website URL: <input type="text" name="firstAddresses" id="firstAddr1">
-			Year: <input type="text" name="years" id="year1">
+			ONLY FIRST 2 LINKS FOR EACH SET WORK aka adding Inputs will create more inputs. But they don't get passed anywhere. Mining.py is under HEAVY construction atm. 
+			<div id="set1">
+				<br>
+				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr1">
+				Time Range: <input type="text" name="years" id="year1">
+				<br>
+				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr2">
+				Time Range: <input type="text" name="years" id="year1">
+				<br>
+			</div>
+			<input type="button" value="Add another text input" onClick="addInput('set1', 1);">
 			<br>
-			Website URL: <input type="text" name="firstAddresses" id="firstAddr2">
-			Year: <input type="text" name="years" id="year2">
 			<br>
-			Website URL: <input type="text" name="secondAddresses" id="secondAddr1">
-			Year: <input type="text" name="years" id="year3">
+			<div id="set2">
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr1">
+				Time Range: <input type="text" name="years" id="year3">
+				<br>
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr2">
+				Time Range: <input type="text" name="years" id="year1">
+				<br>
+			</div>
+			<input type="button" value="Add another text input" onClick="addInput('set2', 2);">
 			<br>
-			Website URL: <input type="text" name="secondAddresses" id="secondAddr2">
-			Year: <input type="text" name="years" id="year4">
+			<br>
+			<div id="set3">
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1">
+				Time Range: <input type="text" name="years" id="year5">
+				<br>
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2">
+				Time Range: <input type="text" name="years" id="year1">
+				<br>
+			</div>
+			<input type="button" value="Add another text input" onClick="addInput('set3', 3);">
+			<br>
 			<br>
 			<input type="submit" value="Submit">
 		</form> 
@@ -36,8 +102,9 @@
 			<input type="submit" value="Submit">
 			<p id="feedback1" style="visibility:hidden"/>Got it! Please click on 'Create Wordcloud' and wait a few moments. </p>
 		</form>
-		<input type="submit" id="create1" value="Create Wordcloud" onclick="create1()" style="visibility:hidden"/>
-		<input type="submit" id="create2" value="Create Wordcloud" onclick="create2()" style="visibility:hidden"/>
+		<input type="submit" id="create1" value="Create Wordcloud1" onclick="create1()" style="visibility:hidden"/>
+		<input type="submit" id="create2" value="Create Wordcloud2" onclick="create2()" style="visibility:hidden"/>
+		<input type="submit" id="create3" value="Create Wordcloud3" onclick="create3()" style="visibility:hidden"/>
 		<p id="feedback2"/>
 		
 	</div>
@@ -53,12 +120,16 @@
 			document.getElementById("feedback1").style.visibility = "visible";
 			document.getElementById("create2").style.visibility = "visible";
 		}
+		function creating3(){
+			document.getElementById("feedback1").style.visibility = "visible";
+			document.getElementById("create3").style.visibility = "visible";
+		}
 	</script>
 	<script type="text/javascript">
 	//Create a new instance of the word cloud visualisation.
 	//Each derived from json, filtered, and parsed to JSON
 
-	//First half of years
+	//First set of years
 		var site_content1 = "{{site_content_json1}}";
 		var words_string1 = site_content1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 
@@ -70,7 +141,7 @@
 		site2_percentage1 = site2_percentage1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 		site2_percentage1 = JSON.parse(site2_percentage1);
 
-	//Second half of years
+	//Second set of years
 		var site_content2 = "{{site_content_json2}}";
 		var words_string2 = site_content2.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 
@@ -82,6 +153,18 @@
 		site2_percentage2 = site2_percentage2.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 		site2_percentage2 = JSON.parse(site2_percentage2);
 
+	//Third set of years
+		var site_content3 = "{{site_content_json3}}";
+		var words_string3 = site_content3.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+
+		var site1_percentage3 = "{{site1_percentage_json3}}";
+		site1_percentage3 = site1_percentage3.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site1_percentage3 = JSON.parse(site1_percentage3);
+
+		var site2_percentage3 = "{{site2_percentage_json3}}";
+		site2_percentage3 = site2_percentage3.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
+		site2_percentage3 = JSON.parse(site2_percentage3);
+
 		var myWordCloud = wordCloud('body');
 
 		// console.log(site1_percentage);
@@ -89,17 +172,23 @@
 
 		if (words_string1 != ""){ creating1(); }
 		if (words_string2 != ""){ creating2(); }
+		if (words_string3 != ""){ creating3(); }
 
 		var words_array1 = words_string1.split(", ");
 		var obj1 = { };
 		var words_array2 = words_string2.split(", ");
 		var obj2 = { };
+		var words_array3 = words_string3.split(", ");
+		var obj3 = { };
 
 		for (var i = 0, j = words_array1.length; i < j; i++) {
 			obj1[words_array1[i]] = (obj1[words_array1[i]] || 0) + 1;
 		}
 		for (var i = 0, j = words_array2.length; i < j; i++) {
 			obj2[words_array2[i]] = (obj2[words_array2[i]] || 0) + 1;
+		}
+		for (var i = 0, j = words_array3.length; i < j; i++) {
+			obj3[words_array3[i]] = (obj3[words_array3[i]] || 0) + 1;
 		}
 
 		var unique_words_array1 = Array.from(new Set(words_array1));
@@ -114,9 +203,16 @@
 				obj2[unique_words_array2[i]] = 0; 
 			}
 		}
+		var unique_words_array3 = Array.from(new Set(words_array3));
+		for (var i in unique_words_array3) {
+			if (obj3[unique_words_array3[i]] < 5) { 
+				obj3[unique_words_array3[i]] = 0; 
+			}
+		}
 		
 		var words1 = unique_words_array1.map(function (d) { return {text: d, size: obj1[d]}; });
 		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
+		var words3 = unique_words_array3.map(function (d) { return {text: d, size: obj3[d]}; });
 	</script>
 	<script type="text/javascript">
 		function create1(){
@@ -127,8 +223,13 @@
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2);
 		}
+		function create3(){
+			document.getElementById("feedback2").innerHTML = "Working...";
+			showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3);
+		}
 	</script>
 </body>
 
 </html>
+
 
