@@ -15,6 +15,8 @@ module.exports = function() {
       fontSize = cloudFontSize,
       fontStyle = cloudFontNormal,
       fontWeight = cloudFontNormal,
+	  x = cloudX,
+	  y = cloudY,
       rotate = cloudRotate,
       padding = cloudPadding,
       spiral = archimedeanSpiral,
@@ -42,6 +44,8 @@ module.exports = function() {
           d.font = font.call(this, d, i);
           d.style = fontStyle.call(this, d, i);
           d.weight = fontWeight.call(this, d, i);
+		  d.x = x.call(this, d, i);
+		  d.y = y.call(this, d, i);
           d.rotate = rotate.call(this, d, i);
           d.size = ~~fontSize.call(this, d, i);
           d.padding = padding.call(this, d, i);
@@ -58,8 +62,19 @@ module.exports = function() {
       var start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
         var d = data[i];
-        d.x = (size[0] * (random() + .5)) >> 1;
-        d.y = (size[1] * (random() + .5)) >> 1;
+		if (d.x != null){ 
+			//if (d.text == 'computer'){ console.log("Found a previous d.x: " + d.x); }
+			d.x = (d.x + 500); 
+		}else{ 
+			d.x = (size[0] * (random() + .5)) >> 1;
+			//if (d.text == 'computer'){ console.log("Initializing d.x: " + d.x); }
+		}if (d.y != null){
+			//if (d.text == 'computer'){ console.log("Found a previous d.y: " + d.y); }
+			d.y = (d.y + 500);
+		}else{ 
+			d.y = (size[1] * (random() + .5)) >> 1;
+			//if (d.text == 'computer'){ console.log("Initializing d.y: " + d.y); }
+		}
         cloudSprite(contextAndRatio, d, data, i);
         if (d.hasText && place(board, d, bounds)) {
           tags.push(d);
@@ -172,7 +187,15 @@ module.exports = function() {
   cloud.fontWeight = function(_) {
     return arguments.length ? (fontWeight = functor(_), cloud) : fontWeight;
   };
-
+	
+  cloud.x = function(_) {
+    return arguments.length ? (x = functor(_), cloud) : x;
+  };
+  
+  cloud.y = function(_) {
+    return arguments.length ? (y = functor(_), cloud) : y;
+  };
+  
   cloud.rotate = function(_) {
     return arguments.length ? (rotate = functor(_), cloud) : rotate;
   };
@@ -219,6 +242,14 @@ function cloudFontNormal() {
 
 function cloudFontSize(d) {
   return Math.sqrt(d.value);
+}
+
+function cloudX() {
+	return null;
+}
+
+function cloudY() {
+	return null;
 }
 
 function cloudRotate() {

@@ -10,7 +10,7 @@ from data.models import Docs
 def index(request):
 	site_content_keys = []
 	site_content_values = []
-	json_string = '['
+	site_content_json = '['
 	wordcloud_object_dict = {}
 	"""
 	if request.method == 'POST':
@@ -52,14 +52,23 @@ def index(request):
 		
 		wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
 		site_content = wordcloud_object_dict['site_content']
-		
+		site1_percentage_json = wordcloud_object_dict['site1_percentage_json']
+		site2_percentage_json = wordcloud_object_dict['site2_percentage_json']
+
 		for i in site_content:
 			site_content_keys.append(i[0])
 			site_content_values.append(i[1])
-			json_string += (('' + i[0] + ', ') * i[1])
-		json_string = json_string[:-2] + ']'
+			site_content_json += (('' + i[0] + ', ') * i[1])
+		site_content_json = site_content_json[:-2] + ']'
 	else:
 		site_content = ''
-	c = { 'json_string':json_string }
+		site1_percentage_json = ''
+		site2_percentage_json = ''
+
+	c = {
+			'site_content_json':site_content_json,
+			'site1_percentage_json':site1_percentage_json,
+			'site2_percentage_json':site2_percentage_json
+		}
 
 	return render(request, 'data/index.html', c)
