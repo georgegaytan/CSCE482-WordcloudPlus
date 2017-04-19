@@ -60,10 +60,12 @@ module.exports = function() {
         var d = data[i];
 
         if (source1_percent[d.text] > source2_percent[d.text]) {
-          d.x = ((size[0] * (random() + .5)) >> 1) + (source1_percent[d.text] * 3);
+          // d.x = ((size[0] * (random() + .5)) >> 1) + (source1_percent[d.text] * 3);
+          d.x = source1_percent[d.text] * 3;
         }
         else {
-          d.x = ((size[0] * (random() + .5)) >> 1) - (source2_percent[d.text] * 3);
+          // d.x = ((size[0] * (random() + .5)) >> 1) - (source2_percent[d.text] * 3);
+          d.x = - (source2_percent[d.text] * 3);
           // d.x = ((size[0] * (random() + .5)) >> 1);
         }
 
