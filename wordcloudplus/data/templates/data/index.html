@@ -27,7 +27,7 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set1Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set1Counter + 1) + "'><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set1Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set1Counter + 1) + "' required><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set1Counter++;
 			        }
@@ -39,7 +39,7 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set2Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set2Counter + 1) + "'><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set2Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set2Counter + 1) + "' required><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set2Counter++;
 			        }
@@ -51,47 +51,67 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set3Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set3Counter + 1) + "'><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set3Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set3Counter + 1) + "' required><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set3Counter++;
 			        }
 		    	}
+		    }
+
+		    function removeInput(divName, set){
+		    	if (document.getElementById(divName).childElementCount >= 7) {
+		    		document.getElementById(divName).removeChild(document.getElementById(divName).lastChild);
+
+			    	if (set == 1) {
+			    		set1Counter--;
+			    	}
+			    	else if (set == 2) {
+			    		set2Counter--;
+			    	}
+			    	else if (set == 3) {
+			    		set3Counter--;
+			    	}
+		    	}
+
 		    }
 	    </script>
 		<form action="/" method="POST">
 			ONLY FIRST 2 LINKS FOR EACH SET WORK aka adding Inputs will create more inputs. But they don't get passed anywhere. Mining.py is under HEAVY construction atm. 
 			<div id="set1">
 				<br>
-				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr1"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
+				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
+				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
-				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
+				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr2" required></input>
+				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set1', 1);"></input>
+			<input type="button" value="Remove text input" onClick="removeInput('set1', 1);"></input>
 			<br>
 			<br>
 			<div id="set2">
-				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr1"></input>
-				Time Range: <input type="text" name="years" id="year3"></input>
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr1" required></input>
+				Time Range: <input type="text" name="years" id="year3" required></input>
 				<br>
-				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr2" required></input>
+				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set2', 2);"></input>
+			<input type="button" value="Remove text input" onClick="removeInput('set2', 2);"></input>
 			<br>
 			<br>
 			<div id="set3">
-				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1"></input>
-				Time Range: <input type="text" name="years" id="year5"></input>
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1" required></input>
+				Time Range: <input type="text" name="years" id="year5" required></input>
 				<br>
-				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2" required></input>
+				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set3', 3);"></input>
+			<input type="button" value="Remove text input" onClick="removeInput('set3', 3);"></input>
 			<br>
 			<br>
 			<input type="submit" value="Submit"></input></input>
