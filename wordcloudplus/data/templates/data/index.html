@@ -121,11 +121,11 @@
 		}
 		function creating2(){
 			document.getElementById("feedback1").style.visibility = "visible";
-			document.getElementById("create2").style.visibility = "visible";
+			//document.getElementById("create2").style.visibility = "visible";
 		}
 		function creating3(){
 			document.getElementById("feedback1").style.visibility = "visible";
-			document.getElementById("create3").style.visibility = "visible";
+			//document.getElementById("create3").style.visibility = "visible";
 		}
 		
 		//Create a new instance of the word cloud visualisation.
@@ -134,7 +134,7 @@
 		//Each derived from json, filtered, and parsed to JSON
 
 	//First set of years
-		var site_content1 = "{{site_content_json1}}";
+		var site_content1 = "{{site_content_json1|safe}}";
 		var words_string1 = site_content1.replace(/&quot;/g,'"').replace(/\[/g, "").replace(/\]/g, "");
 
 		var site1_percentage1 = "{{site1_percentage_json1}}";
@@ -192,7 +192,9 @@
 		for (var i = 0, j = words_array3.length; i < j; i++) {
 			obj3[words_array3[i]] = (obj3[words_array3[i]] || 0) + 1;
 		}
-
+		
+		var local_min1 = Number.MAX_SAFE_INTEGER;
+		var local_max1 = 0;
 		var unique_words_array1 = Array.from(new Set(words_array1));
 		for (var i = unique_words_array1.length - 1; i >= 0; --i) {
 			var importance = obj1[unique_words_array1[i]] / unique_words_array1.length;
@@ -203,10 +205,13 @@
 			}else if (i >= 1){
 				while ((obj1[unique_words_array1[i-1]] - obj1[unique_words_array1[i]]) > 35){
 					obj1[unique_words_array1[i-1]] = obj1[unique_words_array1[i-1]]-5;
-				}
+				}if (obj1[unique_words_array1[i]] > local_max1){ local_max1 = obj1[unique_words_array1[i]]; }
+				else if (obj1[unique_words_array1[i]] < local_min1) { local_min1 = obj1[unique_words_array1[i]]; }
 			}
 		}
-			
+		
+		var local_min2 = Number.MAX_SAFE_INTEGER;
+		var local_max2 = 0;
 		var unique_words_array2 = Array.from(new Set(words_array2));
 		for (var i = unique_words_array2.length - 1; i >= 0; --i) {
 			var importance = obj2[unique_words_array2[i]] / unique_words_array2.length;
@@ -217,10 +222,13 @@
 			}else if (i >= 1){
 				while ((obj2[unique_words_array2[i-1]] - obj2[unique_words_array2[i]]) > 35){
 					obj2[unique_words_array2[i-1]] = obj2[unique_words_array2[i-1]]-5;
-				}
+				}if (obj2[unique_words_array2[i]] > local_max2){ local_max2 = obj2[unique_words_array2[i]]; }
+				else if (obj2[unique_words_array2[i]] < local_min2) { local_min2 = obj2[unique_words_array2[i]]; }
 			}
 		}
 		
+		var local_min3 = Number.MAX_SAFE_INTEGER;
+		var local_max3 = 0;
 		var unique_words_array3 = Array.from(new Set(words_array3));
 		for (var i = unique_words_array3.length - 1; i >= 0; --i) {
 			var importance = obj3[unique_words_array3[i]] / unique_words_array3.length;
@@ -231,8 +239,28 @@
 			}else if (i >= 1){
 				while ((obj3[unique_words_array3[i-1]] - obj3[unique_words_array3[i]]) > 35){
 					obj3[unique_words_array3[i-1]] = obj3[unique_words_array3[i-1]]-5;
-				}
+				}if (obj3[unique_words_array3[i]] > local_max3){ local_max3 = obj3[unique_words_array3[i]]; }
+				else if (obj3[unique_words_array3[i]] < local_min3) { local_min3 = obj3[unique_words_array3[i]]; }
 			}
+		}
+		
+		var global_max = Math.max(local_max1, local_max2, local_max3);
+		var global_min = Math.min(local_min1, local_min2, local_min3);
+		var r;
+		if (global_max == global_min){
+			r = (150) / (global_max);
+		}else {
+			r = (150) / (global_max - global_min);
+		}
+		
+		for (var i = 0; i < unique_words_array1.length; ++i){
+			obj1[unique_words_array1[i]] = (obj1[unique_words_array1[i]])*r;
+		}
+		for (var i = 0; i < unique_words_array2.length; ++i){
+			obj2[unique_words_array2[i]] = (obj2[unique_words_array2[i]])*r;
+		}
+		for (var i = 0; i < unique_words_array3.length; ++i){
+			obj3[unique_words_array3[i]] = (obj3[unique_words_array3[i]])*r;
 		}
 		
 		var words1 = unique_words_array1.map(function (d) { return {text: d, size: obj1[d]}; });
@@ -242,14 +270,8 @@
 		function create1(){
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
-		}
-		function create2(){
-			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2);
-		}
-		function create3(){
-			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3);
+			if (words_string2 != ""){ setTimeout(function() { showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2) }, 5000) }
+			if (words_string3 != ""){ setTimeout(function() { showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3) }, 10000) }
 		}
 		
 	</script>

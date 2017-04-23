@@ -7,6 +7,11 @@ var word_color1 = {}
 var word_color2 = {}
 var word_color3 = {}
 
+var placed_words_text = []
+var placed_words = []
+var global_instance = 1;
+var previous_instance = 1;
+
 //Appropriately sets color based on source%
 function color_filler(instance, site1_percentage, site2_percentage){
     var color = "";
@@ -46,45 +51,8 @@ function wordCloud(selector) {
 		.attr("height", 1000)
 		.append("g")
 		.attr("transform", "translate(500,500)");
-	
-	//Original Draw
-	/*  
-	//Draw the word cloud
-    function draw(words) {
-		
-        var cloud = svg.selectAll("g text")
-                        .data(words, function(d) { return d.text; })
-		
-        //Entering words
-        cloud.enter()
-            .append("text")
-            .style("font-family", "Impact")
-            //fills svg with color based on param tied to word 'd.text'
-			.style("fill", function(d, i){return word_color[d.text];})
-			.style("fill-opacity", 1)
-            .attr("text-anchor", "middle")
-            .attr('font-size', 1)
-            .text(function(d) { return d.text; })
-		
-        //Entering and existing words
-        cloud.transition()
-			.duration(600)
-			.style("font-size", function(d) { return d.size; })
-			.attr("transform", function(d) {
-				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-			})
-		
-        //Exiting words
-        cloud.exit()
-            .transition()
-			.duration(200)
-			.style('fill-opacity', 1e-6)
-			.attr('font-size', 1)
-			.remove();
-    }
-	*/
 
-    function draw1(words) {
+    function draw(words) {
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
 
@@ -92,8 +60,6 @@ function wordCloud(selector) {
         cloud.enter()
 			.append("text")
             .style("font-family", "Impact")
-            //fills svg with color based on param tied to word 'd.text'
-			.style("fill", function(d, i){return word_color1[d.text];})
 			.style("fill-opacity", 1)
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
@@ -101,7 +67,13 @@ function wordCloud(selector) {
 
         //Entering and existing words
         cloud.transition()
-			.duration(600)
+			.duration(900)
+            //fills svg with color based on param tied to word 'd.text'
+			.style("fill", function(d, i){ 
+				if (global_instance == 1){return word_color1[d.text];}
+				else if (global_instance == 2){return word_color2[d.text];}
+				else {return word_color3[d.text];}
+			})
             .style("font-size", function(d) { return d.size; })
 			.attr("transform", function(d) {
 				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
@@ -115,133 +87,35 @@ function wordCloud(selector) {
 			.attr('font-size', 1)
 			.remove();
     }
-
-    //Draw the word cloud
-    function draw2(words) {
-        var cloud = svg.selectAll("g text")
-                        .data(words, function(d) { return d.text; })
-
-        //Entering words
-        cloud.enter()
-			.append("text")
-            .style("font-family", "Impact")
-            //fills svg with color based on param tied to word 'd.text'
-			.style("fill", function(d, i){return word_color2[d.text];})
-			.style("fill-opacity", 1)
-            .attr("text-anchor", "middle")
-            .attr('font-size', 1)
-            .text(function(d) { return d.text; })
-
-        //Entering and existing words
-        cloud.transition()
-			.duration(600)
-			.style("font-size", function(d) { return d.size; })
-			.attr("transform", function(d) {
-				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-			})
-
-        //Exiting words
-        cloud.exit()
-            .transition()
-			.duration(200)
-			.style('fill-opacity', 1e-6)
-			.attr('font-size', 1)
-			.remove();
-    }
-
-    //Draw the word cloud
-    function draw3(words) {
-        var cloud = svg.selectAll("g text")
-                        .data(words, function(d) { return d.text; })
-		
-        //Entering words
-        cloud.enter()
-			.append("text")
-            .style("font-family", "Impact")
-            //fills svg with color based on param tied to word 'd.text'
-			.style("fill", function(d, i){return word_color3[d.text];})
-			.style("fill-opacity", 1)
-            .attr("text-anchor", "middle")
-            .attr('font-size', 1)
-            .text(function(d) { return d.text; })
-		
-        //Entering and existing words
-        cloud.transition()
-            .duration(600)
-			.style("font-size", function(d) { return d.size; })
-			.attr("transform", function(d) {
-				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-			})
-			
-        //Exiting words
-        cloud.exit()
-            .transition()
-			.duration(200)
-			.style('fill-opacity', 1e-6)
-			.attr('font-size', 1)
-			.remove();
-    }
-
+	
+	function placed(word){
+		placed_words_text.push(word.text);
+		placed_words.push(word);
+	}
 
     //Use the module pattern to encapsulate the visualisation code. We'll
     // expose only the parts that need to be public.
     return {
-	
-		//Original update	
-		/*
-		update: function(words) {
-            d3.layout.cloud().size([1000, 1000])
-				.font("Impact")
-                .fontSize(function(d) { return d.size; })
-				.text(function (d) { return d.text; })
-				.x(function (d) { return d.x; })
-				.y(function (d) { return d.y; })
-				.padding(1)
-                .words(words)
-                .on("end", draw)
-                .start();
-        }
-		*/
-
         //Recompute the word cloud for a new set of words. This method will
         // asycnhronously call draw when the layout has been computed.
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(instance, words, site1_percentage, site2_percentage) {
-            if (instance == 1){
             d3.layout.cloud().size([1000, 1000])
 				.font("Impact")
                 .fontSize(function(d) { return d.size; })
 				.text(function (d) { return d.text; })
 				.x(function (d) { return d.x; })
 				.y(function (d) { return d.y; })
+				.rotate(function (d){
+					if (d.rotate != null) {return d.rotate;}
+					else {return ~~(Math.random() * 2) * 90;}
+				})
 				.padding(1)
                 .words(words)
-                .on("end", draw1)			
+				.on("word", placed)
+                .on("end", draw)		
                 .start(site1_percentage, site2_percentage);
-            } else if (instance == 2) {
-            d3.layout.cloud().size([1000, 1000])
-				.font("Impact")
-                .fontSize(function(d) { return d.size; })
-				.text(function (d) { return d.text; })
-				.x(function (d) { return d.x; })
-				.y(function (d) { return d.y; })
-				.padding(1)
-                .words(words)
-                .on("end", draw2)
-                .start(site1_percentage, site2_percentage);
-            } else {
-            d3.layout.cloud().size([1000, 1000])
-				.font("Impact")
-                .fontSize(function(d) { return d.size; })
-				.text(function (d) { return d.text; })
-				.x(function (d) { return d.x; })
-				.y(function (d) { return d.y; })
-				.padding(1)
-                .words(words)
-                .on("end", draw3)
-                .start(site1_percentage, site2_percentage);
-            }
         }
     }
 }
@@ -251,13 +125,33 @@ function wordCloud(selector) {
 // user input or some other source.
 
 function showNewWords(instance, vis, words, site1_percentage, site2_percentage) {
-
+	if (previous_instance = instance-1){
+		for (var word = words.length-1; word >= 0; --word){
+			var index = placed_words_text.indexOf(words[word].text);
+			if (index != -1){
+				words[word].x = placed_words[index].x;
+				words[word].y = placed_words[index].y;
+				words[word].rotate = placed_words[index].rotate;
+			}
+		}
+	}
+	
+	placed_words_text = [];
+	previous_instance = instance;
+	global_instance = instance;
+	
     //applies percentages to word_color dict, instance = year
     color_filler(instance, site1_percentage, site2_percentage);
 
     //runs update with given 'words' set on vis aka myWordCloud
     vis.update(instance, words, site1_percentage, site2_percentage);
+	
 
-    setTimeout(function() { showNewWords(instance, vis, words, site1_percentage, site2_percentage)}, 5000)
+	for (var word = words.length-1; word >= 0; --word){
+		if (placed_words_text.indexOf(words[word].text) == -1){
+			words.splice(word, 1);
+		}
+	}
+	
 }
 
