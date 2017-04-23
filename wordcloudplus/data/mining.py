@@ -8,6 +8,7 @@ import string
 from nltk.stem import WordNetLemmatizer
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+
 #import nltk (for after CDR is complete to not mess with workflow)
 
 #init stopwords list

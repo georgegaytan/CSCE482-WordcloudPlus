@@ -5,6 +5,7 @@ import simplejson as json
 from lxml import html, etree
 from lxml.html.clean import clean_html
 from data.models import Docs
+import textract
 
 @csrf_exempt
 def index(request):
@@ -106,7 +107,30 @@ def index(request):
 		site_content3 = ''
 		site1_percentage_json3 = ''
 		site2_percentage_json3 = ''
+		"""
+		#Stores file in database
+		#then reads file
+		#then deletes files
+		if request.POST['file_upload']:
+			file=request.FILES['doc']
+		# 	print file.name
+			
+			instance = Docs(	file=request.FILES['doc'],
+								title = 'temp',
+							)
+			instance.save()
 
+			file_name = file.name
+			file_name = file_name.replace(" ", "_")
+			path = 'uploads/' + file_name
+			
+			text = textract.process(path)
+			print text
+			instance.delete()
+			
+		else:
+			wordcloud_object_dict = mining.get_data_set(request.POST.getlist('addresses'))
+		"""
 	c = {
 			'site_content_json1':site_content_json1,
 			'site1_percentage_json1':site1_percentage_json1,
