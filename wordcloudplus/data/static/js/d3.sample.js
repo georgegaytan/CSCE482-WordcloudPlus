@@ -188,6 +188,7 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(current_year, words, current_year_freq) {
+			console.log(current_year_freq["area1"]);
             d3.layout.cloud().size([1000, 1000])
                 .font("Impact")
                 .fontSize(function(d) { return d.size; })
@@ -202,7 +203,8 @@ function wordCloud(selector) {
                 .words(words)
                 .on("word", placed)
                 .on("end", draw)        
-                .start(current_year_freq["area1"], current_year_freq["area2"]);
+				.start(current_year_freq["area1"] || current_year_freq["area2"],
+				current_year_freq["area2"] || current_year_freq["area1"]);
         }
     }
 }

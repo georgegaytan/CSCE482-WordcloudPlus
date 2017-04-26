@@ -134,22 +134,17 @@
 	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
 	<script src="{% static 'js/d3.sample.js' %}"></script>
 	<script type="text/javascript">
-		function creating(time_period, year){
-			var newdiv = document.getElementById('createButtons');
-			newdiv.innerHTML += "<input type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
-			document.getElementById("feedback1").style.visibility = "visible";
-		}
-
 	//Create a new instance of the word cloud visualisation
 		var myWordCloud = wordCloud('body');
 	
-		var timeslot_word_count = "{{timeslot_word_count}}"
-		var timeslot_word_frequency = "{{timeslot_word_frequency}}"
+		//var timeslot_word_count = "{{timeslot_word_counts}}"
+		//var timeslot_word_frequency = "{{timeslot_word_frequency}}"
 
 	//Creates years_list array for organization/Timeline button
 		var years = "{{years | safe}}";
 		var years_list_string = years.replace(/\'/g, "").replace(/u/g, "").replace(/\[/g, "").replace(/\]/g, "").replace(/ +/g,"");
 		var years_list = years_list_string.split(",");
+		console.log(years_list);
 
 		//remove duplicates
 		var tmp = [];
@@ -161,7 +156,7 @@
 
 	    //for loop to make buttons for timeline
 		for(var year = 0; year < years_list.length; ++year){
-			creating(years_list[year], year+1);
+			creating(years_list[year], year);
 		}
 
 	//Processing/Parsing wordcounts/frequencies into JSON
@@ -175,7 +170,7 @@
 		var timeslot_word_freq = timeslot_word_freq.replace(/&quot;/g,'"');
 		timeslot_word_freq = '[' + timeslot_word_freq + ']';
 		var timeslot_word_freq_JSON = JSON.parse(timeslot_word_freq);
-		console.log(timeslot_word_freq_JSON);
+		//console.log(timeslot_word_freq_JSON);
 
 		//Sort word_count by highest
 		var word_string_array = {};
@@ -187,7 +182,7 @@
 			array.sort(function(a,b){return a[1] - b[1]});
 			array.reverse();
 			timeslot_word_counts_JSON[0][key] = array;
-
+		
 			word_string_array[key] = timeslot_word_counts_JSON[0][key].toString();
 		}
 
@@ -226,6 +221,7 @@
 		
 		var all_words = [];
 		for (var year in timeslot_word_counts_JSON[0]){
+			console.log(year);
 			all_words.push(timeslot_word_counts_JSON[0][year].map(function (d) { return {text: d[0], size: d[1]}; }));
 		}
 
@@ -239,12 +235,20 @@
 		 	}
 		});
 
+		function creating(time_period, year){
+			var newdiv = document.getElementById('createButtons');
+			newdiv.innerHTML += "<input type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
+			document.getElementById("feedback1").style.visibility = "visible";
+		}
+		
 		function create(time_period, year){
 			document.getElementById("feedback2").innerHTML = "Working...";
 			//document.getElementById("timeRange").style.visibility = "visible";
 			document.getElementById("timeRange").max = year;
-			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][years_list[year-1]]);
-			
+			console.log(year);
+			console.log(time_period);
+			console.log(all_words[year-1]);
+			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][time_period]);
 		}
 		
 	</script>
