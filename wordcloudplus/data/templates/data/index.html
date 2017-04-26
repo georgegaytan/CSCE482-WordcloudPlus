@@ -128,7 +128,7 @@
 		<input type="submit" id="create1" value="Create Wordcloud1" onclick="create1()" style="visibility:hidden"></input>
 		<input type="submit" id="create2" value="Create Wordcloud2" onclick="create2()" style="visibility:hidden"></input>
 		<input type="submit" id="create3" value="Create Wordcloud3" onclick="create3()" style="visibility:hidden"></input>
-		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="3" style="width: 400px;">
+		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="3" style="width: 400px;visibility:hidden;"></input>
 		<p id="feedback2"></p>
 	</div>
 	
@@ -289,15 +289,13 @@
 		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
 		var words3 = unique_words_array3.map(function (d) { return {text: d, size: obj3[d]}; });
 
-		var all_words = [];
-		all_words.push(words1);
-		all_words.push(words2);
-		all_words.push(words3);
-
+		var all_words = [words1, words2, words3];
+		var all_percentages = [site1_percentage1, site2_percentage1, site1_percentage2, site2_percentage2, site1_percentage3, site2_percentage3];
 		
-		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, all_words[this.value-1], site1_percentage2, site2_percentage2) });
+		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1]) });
 		
 		function create1(){
+			document.getElementById("timeRange").style.visibility = "visible";
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
 		}
