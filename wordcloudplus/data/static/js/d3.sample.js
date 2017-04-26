@@ -18,39 +18,75 @@ function color_filler(current_year, current_year_freq){
 	timeslot_word_color[current_year] = {};
     //If area1/2/3 exist, assign them to dictionary r/b/g
     //YES THESE ARE NOT RGB, THEY ARE RBG. So Area1v2 can be RvB
-    if (current_year_freq["area1"] !== {}){
-		//console.log("I'm in area1");
+    if (typeof current_year_freq["area1"] != 'undefined'){
         r = current_year_freq["area1"];
-		//console.log(r);
     }
-    if (current_year_freq["area2"] !== {}){
-		//console.log("I'm in area2");
+    if (typeof current_year_freq["area2"] != 'undefined'){
         b = current_year_freq["area2"];
-		//console.log(b);
     }
-    if (current_year_freq["area3"] !== 'undefined'){
-		//console.log("I'm in area3");
+    if (typeof current_year_freq["area3"] != 'undefined'){
         g = current_year_freq["area3"];
-		//console.log(g);
     }
 
-    if (typeof b !== 'undefined' && typeof g !== 'undefined' && typeof r !== 'undefined') {
+    if (typeof b != 'undefined' && typeof g != 'undefined' && typeof r != 'undefined') {
         //iterates through all words, distributes % of red/blue/green
         for (var word in r){
             //this format is used to 'fill' svg objects
-            color = "rgb(" + r[word] + "%," + g[word] + "%," + b[word] + "%)";
+			if (r[word] == 100){
+				color = "rgb(" + r[word] + "%,0%,0%)";
+			}else if (g[word] == 100){
+				color = "rgb(0%," + g[word] + "%,0%)";
+			}else if (b[word] == 100){
+				color = "rgb(0%,0%," + b[word] + "%)";
+			}else{
+				color = "rgb(" + r[word] + "%," + g[word] + "%," + b[word] + "%)";
+			}
+            timeslot_word_color[current_year][word] = color;
+        }for (var word in g){
+            //this format is used to 'fill' svg objects
+			if (r[word] == 100){
+				color = "rgb(" + r[word] + "%,0%,0%)";
+			}else if (g[word] == 100){
+				color = "rgb(0%," + g[word] + "%,0%)";
+			}else if (b[word] == 100){
+				color = "rgb(0%,0%," + b[word] + "%)";
+			}else{
+				color = "rgb(" + r[word] + "%," + g[word] + "%," + b[word] + "%)";
+			}
+            timeslot_word_color[current_year][word] = color;
+        }for (var word in b){
+            //this format is used to 'fill' svg objects
+			if (r[word] == 100){
+				color = "rgb(" + r[word] + "%,0%,0%)";
+			}else if (g[word] == 100){
+				color = "rgb(0%," + g[word] + "%,0%)";
+			}else if (b[word] == 100){
+				color = "rgb(0%,0%," + b[word] + "%)";
+			}else{
+				color = "rgb(" + r[word] + "%," + g[word] + "%," + b[word] + "%)";
+			}
             timeslot_word_color[current_year][word] = color;
         }
     } else if (typeof b !== 'undefined' && typeof r !== 'undefined') {
         //iterates through all words, distributes % of red/blue/green
-        for (var word in r){
+        for (var word in b){
+            //this format is used to 'fill' svg objects
+            color = "rgb(" + r[word] + "%,0%," + b[word] + "%)";
+            timeslot_word_color[current_year][word] = color;
+        }
+		for (var word in r){
             //this format is used to 'fill' svg objects
             color = "rgb(" + r[word] + "%,0%," + b[word] + "%)";
             timeslot_word_color[current_year][word] = color;
         }   
     } else if (typeof g !== 'undefined' && typeof r !== 'undefined') {
         //iterates through all words, distributes % of red/blue/green
-        for (var word in r){
+        for (var word in g){
+            //this format is used to 'fill' svg objects
+            color = "rgb(" + r[word] + "%," + g[word] + "%,0%)";
+            timeslot_word_color[current_year][word] = color;
+        } 
+		for (var word in r){
             //this format is used to 'fill' svg objects
             color = "rgb(" + r[word] + "%," + g[word] + "%,0%)";
             timeslot_word_color[current_year][word] = color;
@@ -61,7 +97,12 @@ function color_filler(current_year, current_year_freq){
             //this format is used to 'fill' svg objects
             color = "rgb(0%," + g[word] + "%," + b[word] + "%)";
             timeslot_word_color[current_year][word] = color;
-        }      
+        } 
+		for (var word in g){
+            //this format is used to 'fill' svg objects
+            color = "rgb(0%," + g[word] + "%," + b[word] + "%)";
+            timeslot_word_color[current_year][word] = color;
+        }   
     }else if (typeof r !== 'undefined'){
         //iterates through all words, distributes % of red/blue/green
         for (var word in r){
@@ -98,7 +139,6 @@ function wordCloud(selector) {
         .attr("transform", "translate(500,500)");
 
     function draw(words) {
-		console.log(timeslot_word_color[global_instance]);
 		
         var cloud = svg.selectAll("g text")
                         .data(words, function(d) { return d.text; })
@@ -182,12 +222,13 @@ function showNewWords(current_year, vis, all_words, current_year_freq) {
             }
         }
     }
-        
+    
+	timeslot_word_color = {};
     placed_words_text = [];
     placed_words = [];
     previous_instance = current_year;
     global_instance = current_year;
-        
+    
     //applies percentages to word_color dict, instance = year
     color_filler(current_year, current_year_freq);
 
