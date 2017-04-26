@@ -1,3 +1,4 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -142,7 +143,6 @@
 	//Create a new instance of the word cloud visualisation
 		var myWordCloud = wordCloud('body');
 	
-	//Create a new instance of the word cloud visualisation
 		var post_processed_storage = "{{post_processed_storage}}"
 		var timeslot_word_count = "{{timeslot_word_count}}"
 		var timeslot_word_frequency = "{{timeslot_word_frequency}}"
@@ -161,8 +161,8 @@
 	    years_list.sort();
 
 	    //for loop to make buttons for timeline
-		for(var year = 1; year < years_list.length; ++year){
-			creating(years_list[year], year);
+		for(var year = 0; year < years_list.length; ++year){
+			creating(years_list[year], year+1);
 		}
 
 	//Processing/Parsing wordcounts/frequencies into JSON
@@ -176,13 +176,13 @@
 		var timeslot_word_counts = timeslot_word_counts.replace(/&quot;/g,'"');
 		timeslot_word_counts = '[' + timeslot_word_counts + ']';
 		var timeslot_word_counts_JSON = JSON.parse(timeslot_word_counts);
-		console.log(timeslot_word_counts_JSON);
+		//console.log(timeslot_word_counts_JSON);
 
 		var timeslot_word_freq = "{{timeslot_word_frequency}}";
 		var timeslot_word_freq = timeslot_word_freq.replace(/&quot;/g,'"');
 		timeslot_word_freq = '[' + timeslot_word_freq + ']';
 		var timeslot_word_freq_JSON = JSON.parse(timeslot_word_freq);
-		//console.log(timeslot_word_freq_JSON);
+		console.log(timeslot_word_freq_JSON);
 
 		//Sort word_count by highest
 		var word_string_array = {};
@@ -211,18 +211,6 @@
 		//     console.log(obj);
 		// }
 
-		//BOOP BOOOP BOOP
-		//THE FOLLOWING IS HARDCODED FOR TESTING, ASSUMES 1995 is a YEAR ENTERED
-		//var words_array = timeslot_word_counts[0].split(", ");
-		
-		//var words_array = post_processed_storage_JSON[0][1995]["area1"].toString().replace(/\[/g, "").replace(/\]/g, "").split(",");
-		//console.log(words_array);
-
-		//var obj1 = { };
-
-		//for (var i = 0, j = words_array.length; i < j; i++) {
-			//obj1[words_array[i]] = (obj1[words_array[i]] || 0) + 1;
-		//}
 		for (var year in timeslot_word_counts_JSON[0]){
 			var smallest_word_size = Number.MAX_SAFE_INTEGER;
 			var biggest_word_size = 0;
@@ -230,7 +218,7 @@
 
 			for (var word = timeslot_word_counts_JSON[0][year].length - 1; word >= 0; --word) {
 				var importance = timeslot_word_counts_JSON[0][year][word][1] / timeslot_word_counts_JSON[0][year].length;
-				if (importance < .02) { 
+				if (importance < .05) { 
 				//if (obj1[unique_words_array[i]] < 5){
 					timeslot_word_counts_JSON[0][year][word][1] = 0;
 					timeslot_word_counts_JSON[0][year].splice(word, 1);
@@ -249,14 +237,15 @@
 			var r;
 
 			if (smallest_word_size == biggest_word_size){
-				r = (150) / (biggest_word_size);
+				r = (100) / (biggest_word_size);
 			}else {
-				r = (150) / (biggest_word_size - smallest_word_size);
+				r = (100) / (biggest_word_size - smallest_word_size);
 			}
 			for (var i = 0; i < timeslot_word_counts_JSON[0][year].length; ++i){
 				timeslot_word_counts_JSON[0][year][i][1] = timeslot_word_counts_JSON[0][year][i][1]*r;
 			}
 		}
+		
 		//var words = unique_words_array.map(function (d) { return {text: d, size: obj1[d]}; });
 		var all_words = [];
 		for (var year in timeslot_word_counts_JSON[0]){
@@ -267,14 +256,14 @@
 		// var all_words = [words1, words2, words3];
 		// var all_percentages = [site1_percentage1, site2_percentage1, site1_percentage2, site2_percentage2, site1_percentage3, site2_percentage3];
 		
-		// $(".slider").on("input", function() {
-		// 	if (this.value < 3){
-		// 		showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1])
-		// 	}else if (this.value == 3){
-		// 		showNewWords(this.value, myWordCloud, all_words[this.value-2], all_percentages[this.value*2 - 4], all_percentages[this.value*2-3])
-		// 		showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1])
-		// 	}
-		// });
+		$(".slider").on("input", function() {
+			if (this.value < 3){
+		 		showNewWords(this.value, myWordCloud, all_words[this.value-1], timeslot_word_freq_JSON[0][years_list[this.value]])
+		 	}else if (this.value == 3){
+		 		showNewWords(this.value, myWordCloud, all_words[this.value-2], timeslot_word_freq_JSON[0][years_list[this.value]])
+		 		showNewWords(this.value, myWordCloud, all_words[this.value-1], timeslot_word_freq_JSON[0][years_list[this.value]])
+		 	}
+		});
 
 		//console.log(words);
 		//console.log(timeslot_word_freq_JSON[0][1995]["area1"]);
@@ -282,8 +271,9 @@
 
 		function create(time_period, year){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			console.log(year);
-			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][time_period]["area1"], timeslot_word_freq_JSON[0][time_period]["area3"]);
+			document.getElementById("timeRange").style.visibility = "visible";
+			document.getElementById("timeRange").max = year;
+			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][years_list[year-1]]);
 		}
 		
 	</script>

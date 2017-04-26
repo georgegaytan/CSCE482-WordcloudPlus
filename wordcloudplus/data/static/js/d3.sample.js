@@ -137,6 +137,7 @@ function showNewWords(instance, vis, words, site1_percentage, site2_percentage) 
 	}
 	
 	placed_words_text = [];
+	placed_words = [];
 	previous_instance = instance;
 	global_instance = instance;
 	
@@ -145,7 +146,6 @@ function showNewWords(instance, vis, words, site1_percentage, site2_percentage) 
 
     //runs update with given 'words' set on vis aka myWordCloud
     vis.update(instance, words, site1_percentage, site2_percentage);
-	
 
 	for (var word = words.length-1; word >= 0; --word){
 		if (placed_words_text.indexOf(words[word].text) == -1){
