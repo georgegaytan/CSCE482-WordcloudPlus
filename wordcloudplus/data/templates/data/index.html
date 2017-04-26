@@ -82,8 +82,8 @@
 				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
 				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
-				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('area1', 1);"></input>
@@ -91,11 +91,11 @@
 			<br>
 			<br>
 			<div id="area2">
-				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr1" required></input>
-				Time Range: <input type="text" name="years" id="year3" required></input>
+				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr1"></input>
+				Time Range: <input type="text" name="years" id="year3"></input>
 				<br>
-				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('area2', 2);"></input>
@@ -103,11 +103,11 @@
 			<br>
 			<br>
 			<div id="area3">
-				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1" required></input>
-				Time Range: <input type="text" name="years" id="year5" required></input>
+				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1"></input>
+				Time Range: <input type="text" name="years" id="year5"></input>
 				<br>
-				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('area3', 3);"></input>
@@ -126,7 +126,6 @@
 		</form>
 		<div id="createButtons"></div>
 		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="1" style="width: 400px;visibility:hidden;"></input>
-		<input type="range" name="points" id="timeRange" value="50" min="0" max="100" style="width: 400px;">
 		<p id="feedback2"></p>
 	</div>
 	
@@ -134,9 +133,9 @@
 	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
 	<script src="{% static 'js/d3.sample.js' %}"></script>
 	<script type="text/javascript">
-		function creating(time_period){
+		function creating(time_period, year){
 			var newdiv = document.getElementById('createButtons');
-			newdiv.innerHTML += "<input type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create()'/>";
+			newdiv.innerHTML += "<input type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
 			document.getElementById("feedback1").style.visibility = "visible";
 		}
 
@@ -162,8 +161,8 @@
 	    years_list.sort();
 
 	    //for loop to make buttons for timeline
-		for(var year in years_list){
-			creating(years_list[year]);
+		for(var year = 1; year < years_list.length; ++year){
+			creating(years_list[year], year);
 		}
 
 	//Processing/Parsing wordcounts/frequencies into JSON
@@ -171,19 +170,19 @@
 		var post_processed_storage = post_processed_storage.replace(/&quot;/g,'"');
 		post_processed_storage = '[' + post_processed_storage + ']';
 		var post_processed_storage_JSON = JSON.parse(post_processed_storage);
-		console.log(post_processed_storage_JSON);
+		//console.log(post_processed_storage_JSON);
 
 		var timeslot_word_counts = "{{timeslot_word_counts}}";
 		var timeslot_word_counts = timeslot_word_counts.replace(/&quot;/g,'"');
 		timeslot_word_counts = '[' + timeslot_word_counts + ']';
 		var timeslot_word_counts_JSON = JSON.parse(timeslot_word_counts);
-		//console.log(timeslot_word_counts_JSON);
+		console.log(timeslot_word_counts_JSON);
 
 		var timeslot_word_freq = "{{timeslot_word_frequency}}";
 		var timeslot_word_freq = timeslot_word_freq.replace(/&quot;/g,'"');
 		timeslot_word_freq = '[' + timeslot_word_freq + ']';
 		var timeslot_word_freq_JSON = JSON.parse(timeslot_word_freq);
-		//console.log(timeslow_word_freq_JSON);
+		//console.log(timeslot_word_freq_JSON);
 
 		//Sort word_count by highest
 		var word_string_array = {};
@@ -198,7 +197,6 @@
 
 			word_string_array[key] = timeslot_word_counts_JSON[0][key].toString();
 		}
-
 
 
 		//CTRL+/ to test JSON
@@ -217,15 +215,19 @@
 		//THE FOLLOWING IS HARDCODED FOR TESTING, ASSUMES 1995 is a YEAR ENTERED
 		//var words_array = timeslot_word_counts[0].split(", ");
 		
-		var words_array = post_processed_storage_JSON[0][1995]["area1"].toString().replace(/\[/g, "").replace(/\]/g, "").split(",");
-		console.log(words_array);
+		//var words_array = post_processed_storage_JSON[0][1995]["area1"].toString().replace(/\[/g, "").replace(/\]/g, "").split(",");
+		//console.log(words_array);
 
-		var obj1 = { };
+		//var obj1 = { };
 
-		for (var i = 0, j = words_array.length; i < j; i++) {
-			obj1[words_array[i]] = (obj1[words_array[i]] || 0) + 1;
+		//for (var i = 0, j = words_array.length; i < j; i++) {
+			//obj1[words_array[i]] = (obj1[words_array[i]] || 0) + 1;
+		//}
+		
+		var all_words = [];
+		for (var year in timeslot_word_counts_JSON[0]){
+			all_words.push(timeslot_word_counts_JSON[0][year].map(function (d) { return {text: d[0], size: d[1]}; }));
 		}
-
 		
 		var smallest_word_size = Number.MAX_SAFE_INTEGER;
 		var biggest_word_size = 0;
@@ -260,7 +262,8 @@
 			obj1[unique_words_array[i]] = (obj1[unique_words_array[i]])*r;
 		}
 		
-		var words = unique_words_array.map(function (d) { return {text: d, size: obj1[d]}; });
+		//var words = unique_words_array.map(function (d) { return {text: d, size: obj1[d]}; });
+		
 
 		//TODO: REFORMAT TO BE DYNAMIC
 		// var all_words = [words1, words2, words3];
@@ -275,15 +278,14 @@
 		// 	}
 		// });
 
-		console.log(words);
-		console.log(timeslot_word_freq_JSON[0][1995]["area1"]);
-		console.log(timeslot_word_counts_JSON[0][1995]);
+		//console.log(words);
+		//console.log(timeslot_word_freq_JSON[0][1995]["area1"]);
+		//console.log(timeslot_word_counts_JSON[0][1995]);
 
-		function create(){
+		function create(time_period, year){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			showNewWords(1, myWordCloud, words, timeslot_word_freq_JSON[0][1995]["area1"], timeslot_word_freq_JSON[0][1995]["area3"]);
-			// if (words_string2 != ""){ setTimeout(function() { showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2) }, 5000) }
-			// if (words_string3 != ""){ setTimeout(function() { showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3) }, 10000) }
+			console.log(year);
+			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][time_period]["area1"], timeslot_word_freq_JSON[0][time_period]["area3"]);
 		}
 		
 	</script>
