@@ -241,9 +241,10 @@
 
 		function create(time_period, year){
 			document.getElementById("feedback2").innerHTML = "Working...";
-			document.getElementById("timeRange").style.visibility = "visible";
+			//document.getElementById("timeRange").style.visibility = "visible";
 			document.getElementById("timeRange").max = year;
 			showNewWords(year, myWordCloud, all_words[year-1], timeslot_word_freq_JSON[0][years_list[year-1]]);
+			
 		}
 		
 	</script>
