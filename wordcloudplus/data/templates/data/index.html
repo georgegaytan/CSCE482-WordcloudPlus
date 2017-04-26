@@ -289,14 +289,17 @@
 		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
 		var words3 = unique_words_array3.map(function (d) { return {text: d, size: obj3[d]}; });
 
+		var all_words = [];
+		all_words.push(words1);
+		all_words.push(words2);
+		all_words.push(words3);
+
 		
-		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, words2, site1_percentage2, site2_percentage2) });
+		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, all_words[this.value-1], site1_percentage2, site2_percentage2) });
 		
 		function create1(){
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
-			//if (words_string2 != ""){ showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2) }
-			//if (words_string3 != ""){ showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3) }
 		}
 		
 	</script>
