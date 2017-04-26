@@ -128,7 +128,7 @@
 		<input type="submit" id="create1" value="Create Wordcloud1" onclick="create1()" style="visibility:hidden"></input>
 		<input type="submit" id="create2" value="Create Wordcloud2" onclick="create2()" style="visibility:hidden"></input>
 		<input type="submit" id="create3" value="Create Wordcloud3" onclick="create3()" style="visibility:hidden"></input>
-		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="3" style="width: 400px;visibility:hidden;"></input>
+		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="1" style="width: 400px;visibility:hidden;"></input>
 		<p id="feedback2"></p>
 	</div>
 	
@@ -143,9 +143,11 @@
 		}
 		function creating2(){
 			document.getElementById("feedback1").style.visibility = "visible";
+			document.getElementById("timeRange").max = 2;
 			//document.getElementById("create2").style.visibility = "visible";
 		}
 		function creating3(){
+			document.getElementById("timeRange").max = 3;
 			document.getElementById("feedback1").style.visibility = "visible";
 			//document.getElementById("create3").style.visibility = "visible";
 		}
@@ -220,7 +222,7 @@
 		var unique_words_array1 = Array.from(new Set(words_array1));
 		for (var i = unique_words_array1.length - 1; i >= 0; --i) {
 			var importance = obj1[unique_words_array1[i]] / unique_words_array1.length;
-			if (importance < .02) { 
+			if (importance < 0.02) { 
 			//if (obj1[unique_words_array1[i]] < 5){
 				obj1[unique_words_array1[i]] = 0;
 				unique_words_array1.splice(i, 1);
@@ -237,7 +239,7 @@
 		var unique_words_array2 = Array.from(new Set(words_array2));
 		for (var i = unique_words_array2.length - 1; i >= 0; --i) {
 			var importance = obj2[unique_words_array2[i]] / unique_words_array2.length;
-			if (importance < .02) { 
+			if (importance < 0.02) { 
 			//if (obj2[unique_words_array2[i]] < 5){
 				obj2[unique_words_array2[i]] = 0;
 				unique_words_array2.splice(i, 1);
@@ -254,7 +256,7 @@
 		var unique_words_array3 = Array.from(new Set(words_array3));
 		for (var i = unique_words_array3.length - 1; i >= 0; --i) {
 			var importance = obj3[unique_words_array3[i]] / unique_words_array3.length;
-			if (importance < .02) { 
+			if (importance < 0.02) { 
 			//if (obj3[unique_words_array3[i]] < 5){
 				obj3[unique_words_array3[i]] = 0;
 				unique_words_array3.splice(i, 1);
@@ -288,14 +290,22 @@
 		var words1 = unique_words_array1.map(function (d) { return {text: d, size: obj1[d]}; });
 		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
 		var words3 = unique_words_array3.map(function (d) { return {text: d, size: obj3[d]}; });
-
+		
 		var all_words = [words1, words2, words3];
 		var all_percentages = [site1_percentage1, site2_percentage1, site1_percentage2, site2_percentage2, site1_percentage3, site2_percentage3];
 		
-		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1]) });
+		$(".slider").on("input", function() {
+			if (this.value < 3){
+				showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1])
+			}else if (this.value == 3){
+				showNewWords(this.value, myWordCloud, all_words[this.value-2], all_percentages[this.value*2 - 4], all_percentages[this.value*2-3])
+				showNewWords(this.value, myWordCloud, all_words[this.value-1], all_percentages[this.value*2 - 2], all_percentages[this.value*2-1])
+			}
+		});
 		
 		function create1(){
 			document.getElementById("timeRange").style.visibility = "visible";
+			document.getElementById("timeRange").value = 1;
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
 		}
