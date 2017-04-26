@@ -1,3 +1,4 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +28,7 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set1Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set1Counter + 1) + "' required><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set1Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set1Counter + 1) + "'><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set1Counter++;
 			        }
@@ -39,7 +40,7 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set2Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set2Counter + 1) + "' required><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set2Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set2Counter + 1) + "'><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set2Counter++;
 			        }
@@ -51,7 +52,7 @@
 			        }
 			        else {
 			            var newdiv = document.createElement('div');
-			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set3Counter + 1) + "' required> Time Range: <input type='text' name='years' id='year" + (set3Counter + 1) + "' required><br>";
+			            newdiv.innerHTML = "Set " + set + " URL: <input type='text' name='firstAddresses' id='firstAddr" + (set3Counter + 1) + "'> Time Range: <input type='text' name='years' id='year" + (set3Counter + 1) + "'><br>";
 			            document.getElementById(divName).appendChild(newdiv);
 		    	        set3Counter++;
 			        }
@@ -82,8 +83,8 @@
 				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
 				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
-				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Set 1 URL: <input type="text" name="firstAddresses" id="firstAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set1', 1);"></input>
@@ -91,11 +92,11 @@
 			<br>
 			<br>
 			<div id="set2">
-				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr1" required></input>
-				Time Range: <input type="text" name="years" id="year3" required></input>
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr1"></input>
+				Time Range: <input type="text" name="years" id="year3"></input>
 				<br>
-				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Set 2 URL: <input type="text" name="secondAddresses" id="secondAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set2', 2);"></input>
@@ -103,11 +104,11 @@
 			<br>
 			<br>
 			<div id="set3">
-				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1" required></input>
-				Time Range: <input type="text" name="years" id="year5" required></input>
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1"></input>
+				Time Range: <input type="text" name="years" id="year5"></input>
 				<br>
-				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
+				Set 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2"></input>
+				Time Range: <input type="text" name="years" id="year1"></input>
 				<br>
 			</div>
 			<input type="button" value="Add another text input" onClick="addInput('set3', 3);"></input>
@@ -127,7 +128,7 @@
 		<input type="submit" id="create1" value="Create Wordcloud1" onclick="create1()" style="visibility:hidden"></input>
 		<input type="submit" id="create2" value="Create Wordcloud2" onclick="create2()" style="visibility:hidden"></input>
 		<input type="submit" id="create3" value="Create Wordcloud3" onclick="create3()" style="visibility:hidden"></input>
-		<input type="range" name="points" id="timeRange" value="50" min="0" max="100" style="width: 400px;">
+		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="3" style="width: 400px;">
 		<p id="feedback2"></p>
 	</div>
 	
@@ -287,12 +288,15 @@
 		var words1 = unique_words_array1.map(function (d) { return {text: d, size: obj1[d]}; });
 		var words2 = unique_words_array2.map(function (d) { return {text: d, size: obj2[d]}; });
 		var words3 = unique_words_array3.map(function (d) { return {text: d, size: obj3[d]}; });
+
+		
+		$(".slider").on("input", function() {showNewWords(this.value, myWordCloud, words2, site1_percentage2, site2_percentage2) });
 		
 		function create1(){
 			document.getElementById("feedback2").innerHTML = "Working...";
 			showNewWords(1, myWordCloud, words1, site1_percentage1, site2_percentage1);
-			if (words_string2 != ""){ setTimeout(function() { showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2) }, 5000) }
-			if (words_string3 != ""){ setTimeout(function() { showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3) }, 10000) }
+			//if (words_string2 != ""){ showNewWords(2, myWordCloud, words2, site1_percentage2, site2_percentage2) }
+			//if (words_string3 != ""){ showNewWords(3, myWordCloud, words3, site1_percentage3, site2_percentage3) }
 		}
 		
 	</script>
