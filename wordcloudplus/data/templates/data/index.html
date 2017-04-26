@@ -223,47 +223,45 @@
 		//for (var i = 0, j = words_array.length; i < j; i++) {
 			//obj1[words_array[i]] = (obj1[words_array[i]] || 0) + 1;
 		//}
-		
+		for (var year in timeslot_word_counts_JSON[0]){
+			var smallest_word_size = Number.MAX_SAFE_INTEGER;
+			var biggest_word_size = 0;
+			//var unique_words_array = Array.from(new Set(words_array));
+
+			for (var word = timeslot_word_counts_JSON[0][year].length - 1; word >= 0; --word) {
+				var importance = timeslot_word_counts_JSON[0][year][word][1] / timeslot_word_counts_JSON[0][year].length;
+				if (importance < .02) { 
+				//if (obj1[unique_words_array[i]] < 5){
+					timeslot_word_counts_JSON[0][year][word][1] = 0;
+					timeslot_word_counts_JSON[0][year].splice(word, 1);
+				}else if (word >= 1){
+					while ((timeslot_word_counts_JSON[0][year][word-1][1] - timeslot_word_counts_JSON[0][year][word][1]) > 35){
+						timeslot_word_counts_JSON[0][year][word-1][1] = timeslot_word_counts_JSON[0][year][word-1][1]-5;
+					}if (timeslot_word_counts_JSON[0][year][word][1] > biggest_word_size){
+						biggest_word_size = timeslot_word_counts_JSON[0][year][word][1];
+					}
+					else if (timeslot_word_counts_JSON[0][year][word][1] < smallest_word_size) {
+						smallest_word_size = timeslot_word_counts_JSON[0][year][word][1]; 
+					}
+				}
+			}
+
+			var r;
+
+			if (smallest_word_size == biggest_word_size){
+				r = (150) / (biggest_word_size);
+			}else {
+				r = (150) / (biggest_word_size - smallest_word_size);
+			}
+			for (var i = 0; i < timeslot_word_counts_JSON[0][year].length; ++i){
+				timeslot_word_counts_JSON[0][year][i][1] = timeslot_word_counts_JSON[0][year][i][1]*r;
+			}
+		}
+		//var words = unique_words_array.map(function (d) { return {text: d, size: obj1[d]}; });
 		var all_words = [];
 		for (var year in timeslot_word_counts_JSON[0]){
 			all_words.push(timeslot_word_counts_JSON[0][year].map(function (d) { return {text: d[0], size: d[1]}; }));
 		}
-		
-		var smallest_word_size = Number.MAX_SAFE_INTEGER;
-		var biggest_word_size = 0;
-		var unique_words_array = Array.from(new Set(words_array));
-
-		for (var i = unique_words_array.length - 1; i >= 0; --i) {
-			var importance = obj1[unique_words_array[i]] / unique_words_array.length;
-			if (importance < .02) { 
-			//if (obj1[unique_words_array[i]] < 5){
-				obj1[unique_words_array[i]] = 0;
-				unique_words_array.splice(i, 1);
-			}else if (i >= 1){
-				while ((obj1[unique_words_array[i-1]] - obj1[unique_words_array[i]]) > 35){
-					obj1[unique_words_array[i-1]] = obj1[unique_words_array[i-1]]-5;
-				}if (obj1[unique_words_array[i]] > biggest_word_size){
-					biggest_word_size = obj1[unique_words_array[i]];
-				}
-				else if (obj1[unique_words_array[i]] < smallest_word_size) {
-					smallest_word_size = obj1[unique_words_array[i]]; 
-				}
-			}
-		}
-
-		var r;
-
-		if (smallest_word_size == biggest_word_size){
-			r = (150) / (biggest_word_size);
-		}else {
-			r = (150) / (biggest_word_size - smallest_word_size);
-		}
-		for (var i = 0; i < unique_words_array.length; ++i){
-			obj1[unique_words_array[i]] = (obj1[unique_words_array[i]])*r;
-		}
-		
-		//var words = unique_words_array.map(function (d) { return {text: d, size: obj1[d]}; });
-		
 
 		//TODO: REFORMAT TO BE DYNAMIC
 		// var all_words = [words1, words2, words3];
