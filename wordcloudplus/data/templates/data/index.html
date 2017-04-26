@@ -160,6 +160,9 @@
 
 	    //for loop to make buttons for timeline
 		for(var year = 0; year < years_list.length; ++year){
+			if (years_list.length == 1) {
+				break;
+			};
 			creating(years_list[year], year+1);
 		}
 
@@ -174,7 +177,7 @@
 		var timeslot_word_freq = timeslot_word_freq.replace(/&quot;/g,'"');
 		timeslot_word_freq = '[' + timeslot_word_freq + ']';
 		var timeslot_word_freq_JSON = JSON.parse(timeslot_word_freq);
-		console.log(timeslot_word_freq_JSON);
+		//console.log(timeslot_word_freq_JSON);
 
 		//Sort word_count by highest
 		var word_string_array = {};
