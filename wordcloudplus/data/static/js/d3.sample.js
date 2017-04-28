@@ -154,7 +154,7 @@ function wordCloud(selector) {
 
         //Entering and existing words
         cloud.transition()
-            .duration(900)
+            .duration(3500)
             //fills svg with color based on param tied to word 'd.text'
             .style("fill", function(d, i){ 
                 if (global_instance == 1){return timeslot_word_color[global_instance][d.text];}
@@ -202,8 +202,9 @@ function wordCloud(selector) {
                 .words(words)
                 .on("word", placed)
                 .on("end", draw)        
-				.start(current_year_freq["area1"] || current_year_freq["area2"],
-				current_year_freq["area2"] || current_year_freq["area1"]);
+				.start(current_year_freq["area1"] || current_year_freq["area2"] || current_year_freq["area3"],
+				current_year_freq["area2"] || current_year_freq["area3"] || current_year_freq["area1"],
+				current_year_freq["area3"] || current_year_freq["area1"] || current_year_freq["area2"]);
         }
     }
 }

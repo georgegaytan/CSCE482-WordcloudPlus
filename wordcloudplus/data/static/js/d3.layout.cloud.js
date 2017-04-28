@@ -32,7 +32,7 @@ module.exports = function() {
     return arguments.length ? (canvas = functor(_), cloud) : canvas;
   };
 
-  cloud.start = function(source1_percent, source2_percent) {
+  cloud.start = function(source1_percent, source2_percent, source3_percent) {
     var contextAndRatio = getContext(canvas()),
         board = zeroArray((size[0] >> 5) * size[1]),
         bounds = null,
@@ -55,11 +55,11 @@ module.exports = function() {
     if (timer) clearInterval(timer);
     timer = setInterval(step, 0);
 	//var debug_word = 'viking' //DELETE ALONG WITH console.log()'S IN step() FUNCTION
-    step(source1_percent, source2_percent);
+    step(source1_percent, source2_percent, source3_percent);
 
     return cloud;
 
-    function step(source1_percent, source2_percent) {
+    function step(source1_percent, source2_percent, source3_percent) {
       var start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
         var d = data[i];
@@ -68,12 +68,16 @@ module.exports = function() {
 			//if (d.text == debug_word){ console.log("Found a previous d.x: " + d.x); }
 		}else{ 
 			//d.x = (size[0] * (random() + .5)) >> 1;
-			if (source1_percent[d.text] > source2_percent[d.text]) {
+			if (!(d.text in source1_percent)){ source1_percent[d.text] = 0; }
+			if (!(d.text in source2_percent)){ source2_percent[d.text] = 0; }
+			if (!(d.text in source3_percent)){ source3_percent[d.text] = 0; }
+			if (source1_percent[d.text] > source2_percent[d.text] && source1_percent[d.text] > source3_percent[d.text]) {
 				d.x = (source1_percent[d.text] * 3) + (size[0] >> 1);
-			}else {
+			}else if (source2_percent[d.text] > source1_percent[d.text] && source2_percent[d.text] > source3_percent[d.text]) {
 				d.x = - (source2_percent[d.text] * 3) + (size[0] >> 1);
+			}else{
+				d.x = (size[0] >> 1);
 			}
-			
 			//if (d.text == debug_word){ console.log("Initializing d.x: " + d.x); }
 		}if (d.y != null){
 			d.y = (d.y + (size[1] >> 1));
