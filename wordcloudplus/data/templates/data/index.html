@@ -12,6 +12,12 @@
 
 <body>
 	{% load static %}
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 	<div>
 		<h1>WordCloud+</h1>
 		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="Lovingly crafted by George, Sam, Matt, and Dan" style="width:480px;height:360px;"></img>
@@ -79,7 +85,7 @@
 		<form action="/" method="POST">
 			<div id="area1">
 				<br>
-				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
+				Year/Period: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
 				Time Range: <input type="text" name="years" id="year1" required></input>
 				<br>
 				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr2"></input>
