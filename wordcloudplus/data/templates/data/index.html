@@ -9,7 +9,6 @@
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0"></meta>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 </head>
-
 <body>
 	{% load static %}
     <!-- Bootstrap -->
@@ -18,16 +17,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<div>
-		<h1>WordCloud+</h1>
-		<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="Lovingly crafted by George, Sam, Matt, and Dan" style="width:480px;height:360px;"></img>
+	<div class="row">
+		<div class="text-center col-md-12">
+			<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="Lovingly crafted by George, Sam, Matt, and Dan" style="width:480px;height:360px;"></img>
+		</div>
 	    <script type="text/javascript">
 	    	var set1Counter = 2;
 	    	var set2Counter = 2;
 	    	var set3Counter = 2;
 			var limit = 5;
 
-		    function addInput(divName, set){
+		    function addYear(year, grouping){
 		    	if(set == 1){
 		    		if (set1Counter == limit)  {
 		            	alert("You have reached the limit of adding " + limit + " inputs");
@@ -65,7 +65,7 @@
 		    	}
 		    }
 
-		    function removeInput(divName, set){
+		    function removeGrouping(year, grouping){
 		    	if (document.getElementById(divName).childElementCount >= 7) {
 		    		document.getElementById(divName).removeChild(document.getElementById(divName).lastChild);
 
@@ -83,56 +83,91 @@
 		    }
 	    </script>
 		<form action="/" method="POST">
-			<div id="area1">
-				<br>
-				Year/Period: <input type="text" name="firstAddresses" id="firstAddr1" required></input>
-				Time Range: <input type="text" name="years" id="year1" required></input>
-				<br>
-				Area 1 URL: <input type="text" name="firstAddresses" id="firstAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
-				<br>
+			<!--TITLE ROW-->
+			<div class="row form-group">
+				<div class="col-md-offset-1 col-md-1">
+					<h3>Year/Period</h3>
+				</div>
+				<div class="col-md-offset-1 col-md-3">
+					<h2><font color="red"> Grouping 1 </font></h2>
+				</div>
+				<div class="col-md-3">
+					<h2><font color="blue"> Grouping 2 </font></h2>
+				</div>
+				<div class="col-md-3">
+					<h2><font color="green"> Grouping 3 </font></h2>
+				</div>
+				<!--TEXT ROW-->
+				<div class="col-md-offset-1 col-md-1">
+					<input type="text" name="years" id="year1" class="form-control" required></input>
+				</div>
+				<div class="col-md-offset-1 col-md-3">
+					<input type="text" name="firstAddresses" id="firstAddr1" class="form-control"></input>
+				</div>
+				<div class="col-md-3">
+					<input type="text" name="secondAddresses" id="secondAddr1" class="form-control"></input>
+				</div>
+				<div class="col-md-3">
+					<input type="text" name="thirdAddresses" id="thirdAddr1" class="form-control"></input>
+				</div>
 			</div>
-			<input type="button" value="Add another text input" onClick="addInput('area1', 1);"></input>
-			<input type="button" value="Remove text input" onClick="removeInput('area1', 1);"></input>
-			<br>
-			<br>
-			<div id="area2">
-				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr1"></input>
-				Time Range: <input type="text" name="years" id="year3"></input>
-				<br>
-				Area 2 URL: <input type="text" name="secondAddresses" id="secondAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
-				<br>
+			<!--BUTTON ROW-->
+			<div class="row">
+				<div class="col-md-offset-1 col-md-1">
+					<button type="button" class="btn btn-default" onClick="addYear();">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default" onClick="removeYear();">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-offset-1 col-md-3">
+					<button type="button" class="btn btn-danger" onClick="addURL(1);">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-danger" onClick="removeURL(1);">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-3">
+					<button type="button" class="btn btn-primary" onClick="addURL(2);">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-primary" onClick="removeURL(2);">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-3">
+					<button type="button" class="btn btn-success" onClick="addURL(3);">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-success" onClick="removeURL(3);">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</div>
 			</div>
-			<input type="button" value="Add another text input" onClick="addInput('area2', 2);"></input>
-			<input type="button" value="Remove text input" onClick="removeInput('area2', 2);"></input>
 			<br>
 			<br>
-			<div id="area3">
-				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr1"></input>
-				Time Range: <input type="text" name="years" id="year5"></input>
-				<br>
-				Area 3 URL: <input type="text" name="thirdAddresses" id="thirdAddr2"></input>
-				Time Range: <input type="text" name="years" id="year1"></input>
-				<br>
+			<div class="col-md-offset-1 col-md-1">
+				<input class="btn btn-default" type="submit" value="URL Upload"></input>
 			</div>
-			<input type="button" value="Add another text input" onClick="addInput('area3', 3);"></input>
-			<input type="button" value="Remove text input" onClick="removeInput('area3', 3);"></input>
-			<br>
-			<br>
-			<input type="submit" value="Submit"></input></input>
-		</form> 
-		
+			<br><br>
+		</form>
+		<!-- Semi-deprecated document (word/pdf/etc upload) -->
 		<form action="/" method="POST" enctype='multipart/form-data'>
-			Document Upload: <input type="file" name="doc" id="doc"></input>
-			<br>
-			<input type="hidden" value="file_upload" name="file_upload"></input>
-			<input type="submit" value="Submit"></input>
+			<div class="row form-group">
+				<div class="col-md-offset-1 col-md-2">
+					<input type="file" name="doc" id="doc"></input>
+					<input type="hidden" value="file_upload" name="file_upload"></input>
+				</div>
+				<div class="col-md-2">
+					<input type="submit" value="Document Upload"></input>
+				</div>
+			</div>
 			<p id="feedback1" style="visibility:hidden"/>Got it! Please click on 'Create Wordcloud' and wait a few moments. </p>
 		</form>
+		<!--Buttons for timeline-->
 		<div id="createButtons"></div>
-		<input class="slider" type="range" name="points" id="timeRange" value="1" min="1" max="1" style="width: 400px;visibility:hidden;"></input>
-		<p id="feedback2"></p>
 	</div>
 	
 	<script src="{% static 'js/d3.v3.min.js' %}"></script>
@@ -259,7 +294,7 @@
 		}
 		
 	</script>
-
+</body>
 </html>
 
 
