@@ -266,7 +266,6 @@
 		
 		var all_words = [];
 		for (var year in timeslot_word_counts_JSON[0]){
-			console.log(year);
 			all_words.push(timeslot_word_counts_JSON[0][year].map(function (d) { return {text: d[0], size: d[1]}; }));
 		}
 
