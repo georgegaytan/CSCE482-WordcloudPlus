@@ -21,63 +21,6 @@
 		<div class="text-center col-md-12">
 			<img src="{% static 'images/wordcloudpluslogo.png' %}" alt="Lovingly crafted by George, Sam, Matt, and Dan" style="width:480px;height:360px;"></img>
 		</div>
-	    <script type="text/javascript">
-	    	var set1Counter = 1;
-	    	var set2Counter = 1;
-	    	var set3Counter = 1;
-			var limit = 5;
-			var num_years = 1;
-			
-			function addYear(){
-				num_years++;
-				set1Counter++;
-				set2Counter++;
-				set3Counter++;
-				var newdiv = document.createElement("div");
-				newdiv.id = 'year' + num_years;
-				newdiv.innerHTML = "<div class='col-md-offset-1 col-md-1'> \
-						<input type='text' name='years' id='year" + num_years + "' class='form-control' required></input> \
-						<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
-						<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
-					</div> \
-					<div class='col-md-offset-1 col-md-3'> \
-						<input type='text' name='firstAddresses' id='firstAddr" + set1Counter + "' class='form-control'></input> \
-					</div> \
-					<div class='col-md-3'> \
-						<input type='text' name='secondAddresses' id='secondAddr" + set2Counter + "' class='form-control'></input> \
-					</div> \
-					<div class='col-md-3'> \
-						<input type='text' name='thirdAddresses' id='thirdAddr" + set3Counter + "' class='form-control'></input> \
-					</div>";
-			    document.getElementById("text-input-fields").appendChild(newdiv);
-			}
-			
-		    function removeYear(){
-				var olddiv = document.getElementById("year" + num_years);
-				document.getElementById("text-input-fields").removeChild(olddiv);
-			}
-
-		    function addURL(year){
-			
-			}
-
-		    function removeURL(year){
-		    	if (document.getElementById(divName).childElementCount >= 7) {
-		    		document.getElementById(divName).removeChild(document.getElementById(divName).lastChild);
-
-			    	if (set == 1) {
-			    		set1Counter--;
-			    	}
-			    	else if (set == 2) {
-			    		set2Counter--;
-			    	}
-			    	else if (set == 3) {
-			    		set3Counter--;
-			    	}
-		    	}
-
-		    }
-	    </script>
 		<form action="/" method="POST">
 			<!--TITLE ROW-->
 			<div class="row form-group">
@@ -97,20 +40,6 @@
 				</div>
 				<!--TEXT ROW-->
 				<div id="text-input-fields">
-					<div class="col-md-offset-1 col-md-1">
-						<input type="text" name="years" id="year1" class="form-control" required></input>
-						<input type='hidden' name='years' id='year1' class='form-control'></input>
-						<input type='hidden' name='years' id='year1' class='form-control'></input>
-					</div>
-					<div class="col-md-offset-1 col-md-3">
-						<input type="text" name="firstAddresses" id="firstAddr1" class="form-control"></input>
-					</div>
-					<div class="col-md-3">
-						<input type="text" name="secondAddresses" id="secondAddr1" class="form-control"></input>
-					</div>
-					<div class="col-md-3">
-						<input type="text" name="thirdAddresses" id="thirdAddr1" class="form-control"></input>
-					</div>
 				</div>
 			</div>
 			<!--BUTTON ROW-->
@@ -126,36 +55,6 @@
 							<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 						</button>
 					</div>
-					<div class="col-md-offset-1 col-md-3">
-						<!--Add URL for grouping 1 button-->
-						<button type="button" class="btn btn-danger" onClick="addURL(1);">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						</button>
-						<!--Subtract URL for grouping 1 button-->
-						<button type="button" class="btn btn-danger" onClick="removeURL(1);">
-							<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-						</button>
-					</div>
-					<div class="col-md-3">
-						<!--Add URL for grouping 2 button-->
-						<button type="button" class="btn btn-primary" onClick="addURL(2);">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						</button>
-						<!--Subtract URL for grouping 2 button-->
-						<button type="button" class="btn btn-primary" onClick="removeURL(2);">
-							<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-						</button>
-					</div>
-					<div class="col-md-3">
-						<!--Add URL for grouping 3 button-->
-						<button type="button" class="btn btn-success" onClick="addURL(3);">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						</button>
-						<!--Subtract URL for grouping 3 button-->
-						<button type="button" class="btn btn-success" onClick="removeURL(3);">
-							<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-						</button>
-					</div>
 				</div>
 			</div>
 			<br>
@@ -165,6 +64,7 @@
 					<!--Submit URLs button-->
 					<input class="btn btn-default" type="submit" value="URL Upload"></input>
 				</div>
+				<div class="col-md-10" id="feedback1" style="visibility:hidden">Got it! Please click on 'Create Wordcloud' and wait a few moments.</div>
 			</div>
 			<br><br>
 		</form>
@@ -179,16 +79,58 @@
 					<input type="submit" value="Document Upload"></input>
 				</div>
 			</div>
-			<p id="feedback1" style="visibility:hidden"/>Got it! Please click on 'Create Wordcloud' and wait a few moments. </p>
 		</form>
 		<!--Buttons for timeline-->
-		<div id="createButtons"></div>
+		<div class="col-md-offset-1 col-md-11" id="createButtons"></div>
 	</div>
 	
 	<script src="{% static 'js/d3.v3.min.js' %}"></script>
 	<script src="{% static 'js/d3.layout.cloud.js' %}"></script>
 	<script src="{% static 'js/d3.sample.js' %}"></script>
 	<script type="text/javascript">
+		var set1Counter = 1;
+		var set2Counter = 1;
+		var set3Counter = 1;
+		var limit = 5;
+		var num_years = 0;
+		
+		function addYear(){
+			num_years++;
+			set1Counter++;
+			set2Counter++;
+			set3Counter++;
+			var newdiv = document.createElement("div");
+			newdiv.id = 'year' + num_years;
+			newdiv.innerHTML = "<div class='col-md-offset-1 col-md-1'> \
+					<input type='text' name='years' id='year" + num_years + "' class='form-control' required></input> \
+					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
+					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
+				</div> \
+				<div class='col-md-offset-1 col-md-3'> \
+					<input type='text' name='firstAddresses' id='firstAddr" + set1Counter + "' class='form-control'></input> \
+				</div> \
+				<div class='col-md-3'> \
+					<input type='text' name='secondAddresses' id='secondAddr" + set2Counter + "' class='form-control'></input> \
+				</div> \
+				<div class='col-md-3'> \
+					<input type='text' name='thirdAddresses' id='thirdAddr" + set3Counter + "' class='form-control'></input> \
+				</div>";
+			document.getElementById("text-input-fields").appendChild(newdiv);
+		}
+		
+		function removeYear(){
+			if (num_years > 1){
+				var olddiv = document.getElementById("year" + num_years);
+				document.getElementById("text-input-fields").removeChild(olddiv);
+				num_years--;
+				set1Counter--;
+				set2Counter--;
+				set3Counter--;
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		addYear();
 	//Create a new instance of the word cloud visualisation
 		var myWordCloud = wordCloud('body');
 	
@@ -296,7 +238,7 @@
 
 		function creating(time_period, year){
 			var newdiv = document.getElementById('createButtons');
-			newdiv.innerHTML += "<input type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
+			newdiv.innerHTML += "<input class='btn btn-default' type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
 			document.getElementById("feedback1").style.visibility = "visible";
 		}
 		
