@@ -103,8 +103,6 @@
 			newdiv.id = 'year' + num_years;
 			newdiv.innerHTML = "<div class='col-md-offset-1 col-md-1'> \
 					<input type='text' name='years' id='year" + num_years + "' class='form-control' required></input> \
-					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
-					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
 				</div> \
 				<div class='col-md-offset-1 col-md-3'> \
 					<input type='text' name='firstAddresses' id='firstAddr" + set1Counter + "' class='form-control'></input> \
@@ -233,6 +231,7 @@
 		}
 		
 		function create(time_period, year){
+			console.log(timeslot_word_freq_JSON);
 			showNewWords(year, myWordCloud, all_words[year], timeslot_word_freq_JSON[0][time_period]);
 		}
 		
