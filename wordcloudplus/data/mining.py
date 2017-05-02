@@ -145,16 +145,16 @@ def get_data_set(area1addr = [], area2addr = [], area3addr = [], years = [], *ar
 			area2Data = {"area2" : current_site_list}
 
 			#if year exists in storage, extend onto processed data to list at that year
-			if years[index_counter] in post_processed_storage:
+			if years[index_counter - len(area1addr)] in post_processed_storage:
 				#if data from area exists in storage, extend that data
-				if "area2" in post_processed_storage[years[index_counter]]:
-					post_processed_storage[years[index_counter]]["area2"].extend(area2Data.values()[0])
+				if "area2" in post_processed_storage[years[index_counter - len(area1addr)]]:
+					post_processed_storage[years[index_counter - len(area1addr)]]["area2"].extend(area2Data.values()[0])
 				#else create new data entry
 				else:
-					post_processed_storage[years[index_counter]]["area2"] = (area2Data.values()[0])
+					post_processed_storage[years[index_counter - len(area1addr)]]["area2"] = (area2Data.values()[0])
 			#else, create new year in storage, add list w/ 1 value (processed data)
 			else:
-				post_processed_storage[years[index_counter]] = area2Data
+				post_processed_storage[years[index_counter - len(area1addr)]] = area2Data
 
 		index_counter+= 1
 
@@ -187,16 +187,16 @@ def get_data_set(area1addr = [], area2addr = [], area3addr = [], years = [], *ar
 			area3Data = {"area3" : current_site_list}
 
 			#if year exists in storage, extend processed data onto list at that year
-			if years[index_counter] in post_processed_storage:
+			if years[index_counter - (len(area1addr) + len(area2addr))] in post_processed_storage:
 				#if data from area exists in storage, extend that data
-				if "area3" in post_processed_storage[years[index_counter]]:
-					post_processed_storage[years[index_counter]]["area3"].extend(area3Data.values()[0])
+				if "area3" in post_processed_storage[years[index_counter - (len(area1addr) + len(area2addr))]]:
+					post_processed_storage[years[index_counter - (len(area1addr) + len(area2addr))]]["area3"].extend(area3Data.values()[0])
 				#else create new data entry
 				else:
-					post_processed_storage[years[index_counter]]["area3"] = (area3Data.values()[0])
+					post_processed_storage[years[index_counter - (len(area1addr) + len(area2addr))]]["area3"] = (area3Data.values()[0])
 			#else, create new year in storage, add list w/ 1 value (processed data)
 			else:
-				post_processed_storage[years[index_counter]] = area3Data
+				post_processed_storage[years[index_counter - (len(area1addr) + len(area2addr))]] = area3Data
 
 		index_counter+= 1
 	
