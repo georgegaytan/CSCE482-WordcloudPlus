@@ -201,7 +201,7 @@ function wordCloud(selector) {
                 .padding(1)
                 .words(words)
                 .on("word", placed)
-                .on("end", draw)        
+                .on("end", draw)
 				.start(current_year_freq["area1"] || current_year_freq["area2"] || current_year_freq["area3"],
 				current_year_freq["area2"] || current_year_freq["area3"] || current_year_freq["area1"],
 				current_year_freq["area3"] || current_year_freq["area1"] || current_year_freq["area2"]);
