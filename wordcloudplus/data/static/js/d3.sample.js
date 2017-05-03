@@ -6,8 +6,8 @@
 var timeslot_word_color = {}
 var placed_words_text = []
 var placed_words = []
-var global_instance = 1;
-var previous_instance = 1;
+var global_instance = 0;
+var previous_instance = 0;
 
 //Appropriately sets color based on source%
 function color_filler(current_year, current_year_freq){
@@ -214,7 +214,7 @@ function wordCloud(selector) {
 // user input or some other source.
 
 function showNewWords(current_year, vis, all_words, current_year_freq) {
-    if (previous_instance = current_year-1){
+    if (previous_instance == current_year-1){
         for (var word = all_words.length-1; word >= 0; --word){
             var index = placed_words_text.indexOf(all_words[word].text);
             if (index != -1){
