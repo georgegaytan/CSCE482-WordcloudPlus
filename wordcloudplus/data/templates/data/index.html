@@ -103,8 +103,6 @@
 			newdiv.id = 'year' + num_years;
 			newdiv.innerHTML = "<div class='col-md-offset-1 col-md-1'> \
 					<input type='text' name='years' id='year" + num_years + "' class='form-control' required></input> \
-					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
-					<input type='hidden' name='years' id='year" + num_years + "' class='form-control'></input> \
 				</div> \
 				<div class='col-md-offset-1 col-md-3'> \
 					<input type='text' name='firstAddresses' id='firstAddr" + set1Counter + "' class='form-control'></input> \
@@ -149,16 +147,15 @@
 		})
 	    years_list = tmp;
 	    years_list.sort();
-
+		
 	    //for loop to make buttons for timeline
 		for(var year = 0; year < years_list.length; ++year){
-			if (years_list.length == 1) {
-				break;
-			};
 			if (years_list[year] == ""){
 				years_list.splice(year, 1);
 			}
-			creating(years_list[year], year);
+			if (years_list[year] != undefined){
+				creating(years_list[year], year);
+			}
 		}
 
 	//Processing/Parsing wordcounts/frequencies into JSON
@@ -225,7 +222,7 @@
 		for (var year in timeslot_word_counts_JSON[0]){
 			all_words.push(timeslot_word_counts_JSON[0][year].map(function (d) { return {text: d[0], size: d[1]}; }));
 		}
-
+		
 		function creating(time_period, year){
 			var newdiv = document.getElementById('createButtons');
 			newdiv.innerHTML += "<input class='btn btn-default' type='submit' id='create" + time_period + "' value='" + time_period + "' onclick='create(" + time_period + ", " + year + ")'/>";
