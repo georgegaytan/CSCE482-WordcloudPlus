@@ -39,11 +39,9 @@ def calc_frequency(areaNum, word_counts, curr_timeslot_word_counts):
 	timeslot_area_percentage = {}
 
 	for i in word_counts:
-		both_contain_word = False
 		for j in curr_timeslot_word_counts:
 			#on same word (key) calculate actual percent
 			if i == j:
-				contain_word = True
 				timeslot_area_percentage[i] = (word_counts[i]/(curr_timeslot_word_counts[j] + 0.00)) * 100
 				timeslot_area_percentage[i] = round(timeslot_area_percentage[i], 2)
 
@@ -59,7 +57,7 @@ def calc_frequency(areaNum, word_counts, curr_timeslot_word_counts):
 	# site1_percentage_json = json.dumps(dict(site1_percentage), cls=DjangoJSONEncoder)
 	# site2_percentage_json = json.dumps(dict(site2_percentage), cls=DjangoJSONEncoder)
 
-# takes a url as a string and returns a SET of TOUPLES of all of the words
+# takes a url as a string and returns a SET of TUPLES of all of the words
 # that are used on that webpage in order of frequency
 def get_data_set(area1addr = [], area2addr = [], area3addr = [], years = [], *args):
 	index_counter = 0
@@ -241,11 +239,11 @@ def get_data_set(area1addr = [], area2addr = [], area3addr = [], years = [], *ar
 				freq = (calc_frequency(3, word_counts, timeslot_word_counts[timeslot]))
 				timeslot_word_frequency[timeslot]["area3"] = freq
 
-	#wordcloud dictionary of objects
-		w = {
-			'post_processed_storage' : post_processed_storage,
-			'timeslot_word_counts' : timeslot_word_counts,
-			'timeslot_word_frequency' : timeslot_word_frequency
-		}
+	#wordcloud object of dictionaries
+	w = {
+		'post_processed_storage' : post_processed_storage,
+		'timeslot_word_counts' : timeslot_word_counts,
+		'timeslot_word_frequency' : timeslot_word_frequency
+	}
 
 	return w
